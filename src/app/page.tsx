@@ -1,15 +1,17 @@
 'use client';
 import { useState } from "react";
 import { fetchAI } from "./lib/prompt/buildPrompt";
+import GenerateTemplate from "./components/mail-composer/GenerateTemplate";
 
 export default function Home() {
-  const [result, setResult] = useState<string | null>(null);
+  const [result, setResult] = useState<string>('');
+  const [template, setTemplate] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleClick() {
     try {
-      const data = await fetchAI("Your message here");
+      const data = await fetchAI("Hi");
       setResult(data.result);
     } catch (err) {
       setError("Something went wrong. Please try again.");
@@ -27,6 +29,7 @@ export default function Home() {
         <button onClick={handleClick} className="p-10 font-bold border-1">
           click to Test
         </button>
+        <GenerateTemplate />
       </main>
     </div>
   );

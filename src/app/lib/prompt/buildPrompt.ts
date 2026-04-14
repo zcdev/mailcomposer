@@ -8,7 +8,7 @@ export async function fetchAI(message: string): Promise<AIResponse> {
     const response = await fetch("/api/compose", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message })
     });
 
     const data = await response.json();
