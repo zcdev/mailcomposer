@@ -1,14 +1,13 @@
-// lib/prompt.ts (fetch for frontend consumption)
-type AIResponse = {
+type MJMLResponse = {
     result: string;
     error?: string;
 };
 
-export async function fetchAI(message: string): Promise<AIResponse> {
+export async function getTemplateData(input: string): Promise<MJMLResponse> {
     const response = await fetch("/api/compose", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message })
+        headers: { "Content-Type": "text/html" },
+        body: JSON.stringify({ input })
     });
 
     const data = await response.json();
@@ -17,5 +16,5 @@ export async function fetchAI(message: string): Promise<AIResponse> {
         throw new Error(data?.error || 'Request failed.');
     }
 
-    return data;
+    return data; // for compileMJML() to receive
 }

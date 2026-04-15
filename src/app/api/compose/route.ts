@@ -1,7 +1,7 @@
 // api/compose/route.ts
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
-import { openai, DEFAULT_MODEL } from '@/src/app/lib/openai';
+import { openai, DEFAULT_MODEL } from '@/src/app/lib/prompt/openai';
 
 export async function POST(req: NextRequest) {
     try {
