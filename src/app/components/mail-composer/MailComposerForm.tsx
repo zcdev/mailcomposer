@@ -15,13 +15,13 @@ export default function MailComposerForm() {
         date: "",
         time: "",
         location: "",
+        food: "",
+        activities: "",
         vibe: "friendly" as Vibe,
+        age: "",
+        classYear: "",
+        year: "",
         message: "",
-        details: {
-            age: undefined as number | undefined,
-            classYear: undefined as number | undefined,
-            year: new Date().getFullYear(),
-        },
     });
 
     function handleSelectChange(
@@ -40,10 +40,7 @@ export default function MailComposerForm() {
 
         setFormData((prev) => ({
             ...prev,
-            details: {
-                ...prev.details,
-                [name]: value ? Number(value) : undefined,
-            },
+            [name]: value,
         }));
     }
 
@@ -51,9 +48,11 @@ export default function MailComposerForm() {
         e.preventDefault();
         console.log("FORM DATA 👉", formData);
         try {
-            const prompt = parseFormData(formData);
-            const data = await promptAI(prompt);
-            await getTemplateData(data.result);
+            const promptData = parseFormData(formData); // string
+            console.log("promptData", promptData);
+            const aiResponseData = await promptAI(promptData); // promise
+            console.log("AI responded Data", aiResponseData.result);
+            await getTemplateData(aiResponseData.result);
         } catch (error) {
             console.error(error);
         }
@@ -96,29 +95,24 @@ export default function MailComposerForm() {
             {/* Placeholder */}
             {formData.theme === "graduation" && (
                 <input
-                    name="age"
+                    name="classYear"
                     type="number"
-                    placeholder="Age"
+                    placeholder="Year of Class"
                     onChange={handleInputChange}
                 />
             )}
 
             {/* Placeholder */}
             {formData.theme === "wedding" && (
-                <input
-                    name="age"
-                    type="number"
-                    placeholder="Age"
-                    onChange={handleInputChange}
-                />
+                ""
             )}
 
             {/* Placeholder */}
             {formData.theme === "newYear" && (
                 <input
-                    name="age"
+                    name="year"
                     type="number"
-                    placeholder="Age"
+                    placeholder="Year"
                     onChange={handleInputChange}
                 />
             )}

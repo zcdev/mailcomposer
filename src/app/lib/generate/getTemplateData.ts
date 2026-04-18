@@ -3,18 +3,16 @@ type MJMLResponse = {
     error?: string;
 };
 
-export async function getTemplateData(input: string): Promise<MJMLResponse> {
-    const response = await fetch("/api/compose", {
+export async function getTemplateData(input: string): Promise<string> {
+    const response = await fetch("/api/compile", {
         method: "POST",
-        headers: { "Content-Type": "text/html" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input })
     });
 
-    const data = await response.json();
-
     if (!response.ok) {
-        throw new Error(data?.error || 'Request failed.');
+        throw new Error("Request failed.");
     }
 
-    return data; // for compileMJML() to receive
+    return await response.text();
 }
