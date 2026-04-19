@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { promptAI } from '../../lib/prompt/promptAI';
 import { parseFormData } from '../../lib/prompt/parseFormData';
-import { getTemplateData } from '../../lib/generate/getTemplateData';
+import { downloadZip } from '../../lib/generate/downloadZip';
 
 type EventTheme = "birthday" | "graduation" | "wedding" | "newYear";
 type Vibe = "formal" | "friendly" | "playful";
@@ -52,7 +52,8 @@ export default function MailComposerForm() {
             console.log("promptData", promptData);
             const aiResponseData = await promptAI(promptData); // promise
             console.log("AI responded Data", aiResponseData.result);
-            await getTemplateData(aiResponseData.result);
+            await downloadZip(aiResponseData.result);
+
         } catch (error) {
             console.error(error);
         }
@@ -124,7 +125,7 @@ export default function MailComposerForm() {
                 onChange={handleInputChange}
             />
 
-            <button type="submit">Generate</button>
+            <button type="submit">Generate & Download</button>
         </form>
     );
 
