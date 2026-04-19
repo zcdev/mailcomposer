@@ -1,68 +1,46 @@
 'use client';
-import { useState } from 'react';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { formSchema, FormValues } from "../../lib/validation/formSchema";
 import { promptAI } from '../../lib/prompt/promptAI';
 import { parseFormData } from '../../lib/prompt/parseFormData';
 import { downloadZip } from '../../lib/generate/downloadZip';
-
-type EventTheme = "birthday" | "graduation" | "wedding" | "newYear";
-type Vibe = "formal" | "friendly" | "playful";
+import Input from '../ui/Input';
+import Button from '../ui/Button';
 
 export default function MailComposerForm() {
-    const [formData, setFormData] = useState({
-        theme: "birthday" as EventTheme,
-        host: "",
-        invitee: "",
-        date: "",
-        time: "",
-        location: "",
-        food: "",
-        activities: "",
-        vibe: "friendly" as Vibe,
-        age: "",
-        classYear: "",
-        year: "",
-        message: "",
+    const {
+        register,
+        watch,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm<FormValues>({
+        resolver: zodResolver(formSchema),
     });
 
-    function handleSelectChange(
-        e: React.ChangeEvent<HTMLSelectElement>
-    ) {
-        const { name, value } = e.target;
+    const theme = watch("theme");
+    const message = watch("message");
 
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    }
-
-    function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.target;
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    }
-
-    async function handleSubmit(e: React.SubmitEvent) {
-        e.preventDefault();
-        console.log("FORM DATA 👉", formData);
+    const onSubmit = async (data: FormValues) => {
         try {
-            const promptData = parseFormData(formData); // string
+            const promptData = parseFormData(data);
             console.log("promptData", promptData);
-            const aiResponseData = await promptAI(promptData); // promise
-            console.log("AI responded Data", aiResponseData.result);
-            await downloadZip(aiResponseData.result);
 
+            const aiResponseData = await promptAI(promptData);
+            console.log("AI responded Data", aiResponseData.result);
+
+            await downloadZip(aiResponseData.result);
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
             {/* Theme */}
-            <select name="theme" value={formData.theme} onChange={handleSelectChange}>
+            <label htmlFor="theme">Theme</label>
+            <select id="theme" {...register("theme")}>
+                <option value="">Select event theme</option>
                 <option value="birthday">Birthday</option>
                 <option value="graduation">Graduation</option>
                 <option value="wedding">Wedding</option>
@@ -70,62 +48,66 @@ export default function MailComposerForm() {
             </select>
 
             {/* Basic fields */}
-            <input name="host" placeholder="Host" onChange={handleInputChange} />
-            <input name="invitee" placeholder="Invitees" onChange={handleInputChange} />
-            <input name="date" placeholder="Date" onChange={handleInputChange} />
-            <input name="time" placeholder="Time" onChange={handleInputChange} />
-            <input name="location" placeholder="Location" onChange={handleInputChange} />
+            <Input label="Host" id="host" placeholder="Host" {...register("host")} />
+            {errors.host && <p>{errors.host.message}</p>}
+            <Input label="Invitee" id="invitee" placeholder="Invitee" {...register("invitee")} />
+            {errors.invitee && <p>{errors.invitee.message}</p>}
+            <Input label="Date" id="date" placeholder="Date" {...register("date")} />
+            {errors.date && <p>{errors.date.message}</p>}
+            <Input label="Time" id="time" placeholder="Time" {...register("time")} />
+            {errors.time && <p>{errors.time.message}</p>}
+            <Input label="Location" id="location" placeholder="Location" {...register("location")} />
+            {errors.location && <p>{errors.location.message}</p>}
+            <Input label="Food" id="food" placeholder="Food" {...register("food")} />
+            {errors.food && <p>{errors.food.message}</p>}
+            <Input label="Activities" id="activities" placeholder="Activities" {...register("activities")} />
+            {errors.activities && <p>{errors.activities.message}</p>}
 
             {/* vibe */}
-            <select name="vibe" value={formData.vibe} onChange={handleSelectChange}>
+            <label htmlFor="vibe">Vibe</label>
+            <select id="vibe" {...register("vibe")} >
+                <option value="">Select event vibe</option>
                 <option value="formal">Formal</option>
                 <option value="friendly">Friendly</option>
                 <option value="playful">Playful</option>
             </select>
 
-            {/* Conditional fields */}
-            {formData.theme === "birthday" && (
-                <input
-                    name="age"
-                    type="number"
+            {theme === "birthday" && (
+                <Input
+                    label="Age"
+                    id="age"
                     placeholder="Age"
-                    onChange={handleInputChange}
+                    {...register("age")}
                 />
             )}
 
-            {/* Placeholder */}
-            {formData.theme === "graduation" && (
-                <input
-                    name="classYear"
-                    type="number"
+            {theme === "graduation" && (
+                <Input
+                    label="Year of Class"
+                    id="classYear"
                     placeholder="Year of Class"
-                    onChange={handleInputChange}
+                    {...register("classYear")}
                 />
             )}
 
-            {/* Placeholder */}
-            {formData.theme === "wedding" && (
-                ""
-            )}
-
-            {/* Placeholder */}
-            {formData.theme === "newYear" && (
-                <input
-                    name="year"
-                    type="number"
+            {theme === "newYear" && (
+                <Input
+                    label="Year"
+                    id="year"
                     placeholder="Year"
-                    onChange={handleInputChange}
+                    {...register("year")}
                 />
             )}
 
-            {/* Message */}
-            <input
-                name="message"
+            <textarea
+                id="message"
+                maxLength={80}
                 placeholder="Add a personal note"
-                onChange={handleInputChange}
+                {...register("message")}
             />
+            <p className={message?.length > 70 ? "text-orange-500" : ""}>{message?.length ?? 0}/80</p>
 
-            <button type="submit">Generate & Download</button>
+            <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Generating..." : "Generate & Download"}</Button>
         </form>
     );
 

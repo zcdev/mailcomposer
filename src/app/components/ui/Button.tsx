@@ -1,10 +1,9 @@
-type ButtonProps = {
-    className: string;
-    onClick: () => void;
-};
+import React from 'react';
 
-export const Button = ({ className, onClick, ...props }: ButtonProps) => {
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+export default function Button({ className, children, ...props }: ButtonProps) {
     return (
-        <button></button>
+        <button {...props} className={`btn ${className ?? ""}`}>{children}</button>
     );
 };
