@@ -17,7 +17,7 @@ export default function Input({ label, error, id, ...props }: InputProps) {
             />
 
             {error && (
-                <p id={`${id}-error`} role="alert">
+                <p id={`${id}-error`} role="alert" className="text-orange-500">
                     {error}
                 </p>
             )}

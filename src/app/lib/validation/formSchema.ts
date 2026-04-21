@@ -1,19 +1,38 @@
 import { z } from "zod";
 
 export const formSchema = z.object({
-    theme: z.enum(["birthday", "graduation", "wedding", "newYear"]),
-    host: z.string(),
-    invitee: z.string(),
-    date: z.string(),
-    time: z.string(),
-    location: z.string(),
-    food: z.string().optional(),
-    activities: z.string(),
-    vibe: z.enum(["formal", "friendly", "playful"]),
-    age: z.string().optional(),
-    classYear: z.string().optional(),
-    year: z.string().optional(),
-    message: z.string().max(80, "Must be 80 characters or fewer"),
-});
 
-export type FormValues = z.infer<typeof formSchema>;
+    theme: z.string()
+        .refine(
+            (val) => ["birthday", "graduation", "wedding", "newYear"].includes(val), {
+            message: "Please select a theme.",
+        }),
+
+    host: z.string().min(1, "Host name is required."),
+
+    invitee: z.string().min(1, "Invitee name is required."),
+
+    date: z.string().min(1, "Please select a date."),
+
+    time: z.string().min(1, "Please select a time."),
+
+    location: z.string().min(1, "Location is required."),
+
+    food: z.string().optional(),
+
+    activities: z.string().min(1, "Please enter at least one activity."),
+
+    vibe: z.string()
+        .refine(
+            (val) => ["formal", "friendly", "playful"].includes(val), {
+            message: "Please select a theme.",
+        }),
+
+    age: z.string().optional(),
+
+    classYear: z.string().optional(),
+
+    year: z.string().optional(),
+
+    message: z.string().max(100, "Message must be less than 100 characters.").optional(),
+});

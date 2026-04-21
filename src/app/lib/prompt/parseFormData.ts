@@ -6,12 +6,12 @@ type PromptInput = {
     time: string;
     location: string;
     food?: string;
-    activities?: string;
-    vibe?: string;
+    activities: string;
+    vibe: string;
     age?: string;
     classYear?: string;
     year?: string;
-    message?: string;
+    message?: string | undefined;
 };
 
 export function parseFormData(data: PromptInput): string {
@@ -49,7 +49,7 @@ ${theme === "Birthday" && age ? `Celebrating ${age} years` : ""}
 ${theme === "Graduation" && classYear ? `Class of ${classYear}` : ""}
 ${theme === "New Year" && year ? `Celebrating the year ${year}` : ""}
 
-Notes: ${message || "None"}
+Notes: ${!message || message === "" ? "None" : message}
 
 Instructions:
 - Highlight what guests can expect
