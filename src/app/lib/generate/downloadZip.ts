@@ -1,7 +1,9 @@
-export async function downloadZip(emailData: string) {
-    const subjectLineTxt = emailData.split('\n')[0].replace(/^\*\*Subject:\*\*\s+/, "");
+import { PromptInput } from "@/src/app/types/prompt";
 
-    const emailBodyMsg = emailData.split('\n')[2].replace(/^\*\*Message:\*\*\s+/, "");
+export async function downloadZip(emailData: string, formData: PromptInput) {
+    const subjectLineTxt = emailData.split('\n')[0].replace(/\*\*Subject:\*\*\s+/, "");
+
+    const emailBodyMsg = emailData.split('\n')[1].replace(/\*\*Message:\*\*\s+/, "");
 
     const response = await fetch('/api/download', {
         method: "POST",
@@ -11,9 +13,12 @@ export async function downloadZip(emailData: string) {
         body: JSON.stringify({
             subject: subjectLineTxt,
             emailBody: emailBodyMsg,
+            formData: formData,
         }),
     });
 
+    console.log(subjectLineTxt);
+    console.log(emailBodyMsg);
     const blob = await response.blob();
     console.log("response", response);
     console.log("blob", blob);
