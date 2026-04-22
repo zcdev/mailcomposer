@@ -1,18 +1,4 @@
-type PromptInput = {
-    theme: string;
-    host: string;
-    invitee: string;
-    date: string;
-    time: string;
-    location: string;
-    food?: string;
-    activities: string;
-    vibe: string;
-    age?: string;
-    classYear?: string;
-    year?: string;
-    message?: string | undefined;
-};
+import { PromptInput } from "../../types/prompt";
 
 export function parseFormData(data: PromptInput): string {
     const {
@@ -45,18 +31,20 @@ Activities: ${activities}
 Vibe: ${vibe}
 
 Details:
-${theme === "Birthday" && age ? `Celebrating ${age} years` : ""}
-${theme === "Graduation" && classYear ? `Class of ${classYear}` : ""}
-${theme === "New Year" && year ? `Celebrating the year ${year}` : ""}
+${theme === "birthday" && age ? `Celebrating ${age} years` : ""}
+${theme === "graduation" && classYear ? `Class of ${classYear}` : ""}
+${theme === "newyear" && year ? `Celebrating the year ${year}` : ""}
 
-Notes: ${!message || message === "" ? "None" : message}
+Notes: ${message}
 
 Instructions:
 - Highlight what guests can expect
 - Make the event feel personal
+- Output to 2 lines with just 1 line break
+- If the vibe is playful, add emojis
 
 Output:
-- Message: 1 short paragraph (max 80 words)
-- Subject: 1 concise line
+- 1 concise line (for subject line, no need to label it for subject)
+- 1 line of text at max 50 words (for the message, no need to label it for message)
 `;
 }

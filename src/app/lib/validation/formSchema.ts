@@ -4,7 +4,7 @@ export const formSchema = z.object({
 
     theme: z.string()
         .refine(
-            (val) => ["birthday", "graduation", "wedding", "newYear"].includes(val), {
+            (val) => ["birthday", "graduation", "wedding", "newyear"].includes(val), {
             message: "Please select a theme.",
         }),
 
@@ -34,5 +34,7 @@ export const formSchema = z.object({
 
     year: z.string().optional(),
 
-    message: z.string().max(100, "Message must be less than 100 characters.").optional(),
+    message: z.string().min(1, "Message must not be empty."),
+
+    rsvp: z.url({ message: "Invalid website address." })
 });

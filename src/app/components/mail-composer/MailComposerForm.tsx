@@ -20,7 +20,7 @@ export default function MailComposerForm() {
     });
 
     const theme = watch("theme");
-    const message = watch("message") ?? "";
+    const message = watch("message");
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
         try {
@@ -30,7 +30,7 @@ export default function MailComposerForm() {
             const aiResponseData = await promptAI(promptData);
             console.log("AI responded Data", aiResponseData.result);
 
-            await downloadZip(aiResponseData.result);
+            await downloadZip(aiResponseData.result, data);
         } catch (error) {
             console.error(error);
         }
@@ -45,7 +45,7 @@ export default function MailComposerForm() {
                 <option value="birthday">Birthday</option>
                 <option value="graduation">Graduation</option>
                 <option value="wedding">Wedding</option>
-                <option value="newYear">New Year</option>
+                <option value="newyear">New Year</option>
             </select>
             {errors?.theme && <p className="text-orange-500">{errors.theme?.message}</p>}
 
@@ -69,7 +69,7 @@ export default function MailComposerForm() {
                 />
             )}
 
-            {theme === "newYear" && (
+            {theme === "newyear" && (
                 <Input
                     label="Year"
                     id="year"
@@ -114,6 +114,9 @@ export default function MailComposerForm() {
             />
 
             <p className={errors.message ? "text-orange-500" : ""}>({message?.length ?? 0}/100) Characters<br />{errors.message?.message}</p>
+
+            <Input label="RSVP Link" id="rsvp" placeholder="https://your-own-link-example.com"
+                {...register("rsvp")} error={errors.rsvp?.message} />
 
             <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Generating..." : "Generate & Download"}</Button>
         </form>
