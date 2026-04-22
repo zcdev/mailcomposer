@@ -1,9 +1,9 @@
 import { PromptInput } from "@/src/app/types/prompt";
 
 export async function downloadZip(emailData: string, formData: PromptInput) {
-    const subjectLineTxt = emailData.split('\n')[0].replace(/\*\*Subject:\*\*\s+/, "");
+    const subjectLineTxt = emailData.split('\n')[0]?.replace(/\*\*Subject:\*\*\s+/, "");
 
-    const emailBodyMsg = emailData.split('\n')[1].replace(/\*\*Message:\*\*\s+/, "");
+    const emailBodyMsg = emailData.split('\n')[1]?.replace(/\*\*Message:\*\*\s+/, "");
 
     const response = await fetch('/api/download', {
         method: "POST",
