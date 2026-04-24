@@ -1,4 +1,4 @@
-import React from 'react';
+'use client';
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
