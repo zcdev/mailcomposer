@@ -13,8 +13,10 @@ export default function Home() {
       <main className="bg-white dark:bg-black p-6 rounded-lg border border-black dark:border-white">
         <Header />
         <Content />
-        <Link href="/professional" className="primary-button inline-flex items-center justify-center px-6 py-3 mt-4 mr-8 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition">Professional</Link>
-        <Link href="/personal" className="primary-button inline-flex items-center justify-center px-6 py-3 mt-4 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition">Personal</Link>
+        <section className="p-2">
+          <Link href="/professional" className="primary-button inline-flex items-center justify-center px-6 py-3 mt-4 mr-8 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition">Professional</Link>
+          <Link href="/personal" className="primary-button inline-flex items-center justify-center px-6 py-3 mt-4 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition">Personal</Link>
+        </section>
       </main>
       <Footer />
     </Wrapper>

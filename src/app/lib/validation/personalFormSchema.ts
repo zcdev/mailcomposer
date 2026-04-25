@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const formSchema = z.object({
+export const personalFormSchema = z.object({
 
     theme: z.string()
         .refine(
@@ -36,5 +36,7 @@ export const formSchema = z.object({
 
     message: z.string().min(1, "Message must not be empty."),
 
-    rsvp: z.url({ message: "Invalid website address." })
+    rsvp: z.url({ message: "Invalid website address." }),
+
+    banner: z.url({ message: "Invalid website address." }).optional(),
 });

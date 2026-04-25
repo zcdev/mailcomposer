@@ -1,7 +1,7 @@
 'use client';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formSchema } from "../../lib/validation/formSchema";
+import { personalFormSchema } from "../../lib/validation/personalFormSchema";
 import { promptAI } from '../../lib/prompt/promptAI';
 import { personalFormData } from '../../lib/prompt/personalFormData';
 import { downloadZip } from '../../lib/generate/downloadZip';
@@ -16,13 +16,13 @@ export default function PersonalForm() {
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm({
-        resolver: zodResolver(formSchema),
+        resolver: zodResolver(personalFormSchema),
     });
 
     const theme = watch("theme");
     const message = watch("message");
 
-    const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const onSubmit = async (data: z.infer<typeof personalFormSchema>) => {
         try {
             const promptData = personalFormData(data);
             console.log("promptData", promptData);
@@ -90,7 +90,7 @@ export default function PersonalForm() {
                 {...register("time")} error={errors.time?.message} />
             <Input label="Location" id="location" placeholder="123 Sunset Blvd, Los Angeles"
                 {...register("location")} error={errors.location?.message} />
-            <Input label="Food" id="food" placeholder="Dinner, snacks, and drinks (optional)"
+            <Input label="Food" id="food" placeholder="Dinner, snacks, and drinks (Optional)"
                 {...register("food")} error={errors.food?.message} />
             <Input label="Activities" id="activities" placeholder="Games, dancing, and live music"
                 {...register("activities")} error={errors.activities?.message} />
@@ -118,6 +118,9 @@ export default function PersonalForm() {
 
             <Input label="RSVP Link" id="rsvp" placeholder="https://your-own-or-facebook-link-example.com"
                 {...register("rsvp")} error={errors.rsvp?.message} />
+
+            <Input label="Banner Link" id="banner" placeholder="https://your-own-banner-link-example.com/banner.png (Optional)"
+                {...register("rsvp")} error={errors.banner?.message} />
 
             <Button type="submit" disabled={isSubmitting} className="primary-button inline-flex items-center justify-center px-6 py-3 mt-4 mr-8 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition">{isSubmitting ? "Generating..." : "Generate & Download"}</Button>
         </form>

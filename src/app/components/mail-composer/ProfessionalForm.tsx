@@ -1,7 +1,7 @@
 'use client';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formSchema } from "../../lib/validation/formSchema";
+import { professionalFormSchema } from "../../lib/validation/professionalFormSchema";
 import { promptAI } from '../../lib/prompt/promptAI';
 import { professionalFormData } from '../../lib/prompt/professionalFormData';
 import { downloadZip } from '../../lib/generate/downloadZip';
@@ -16,13 +16,13 @@ export default function ProfessionalForm() {
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm({
-        resolver: zodResolver(formSchema),
+        resolver: zodResolver(professionalFormSchema),
     });
 
     const theme = watch("theme");
     const message = watch("message");
 
-    const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const onSubmit = async (data: z.infer<typeof professionalFormSchema>) => {
         try {
             const promptData = professionalFormData(data);
             console.log("promptData", promptData);

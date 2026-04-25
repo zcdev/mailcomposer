@@ -4,6 +4,8 @@ export function personalTemplate(subject: string, emailBody: string, formData: P
     formData.theme === "graduation" ? "Congrats, Grads!" :
       formData.theme === "wedding" ? "Cherish Forever" : "Happy New Year!";
   const ASSET_BASE_URL = "https://raw.githubusercontent.com/zcdev/banners/main/";
+
+  const banner = formData.banner ? formData.banner : `${ASSET_BASE_URL}${formData.theme}.png`;
   return `
     <mjml>
       <mj-head>
@@ -36,7 +38,7 @@ export function personalTemplate(subject: string, emailBody: string, formData: P
       <mj-body>
         <mj-section full-width="full-width" padding="0px 0px">
           <mj-column css-class="framer" width="600px" padding="0px 0px">
-            <mj-image css-class="banner" width="600px" padding="0px 0px" src="${ASSET_BASE_URL}${formData.theme}.png" alt="MailComposer ${formData.theme} banner"></mj-image>
+            <mj-image css-class="banner" width="600px" padding="0px 0px" src="${banner}" alt="MailComposer ${formData.theme} banner"></mj-image>
             <mj-text css-class="header" align="center" font-size="40px" color="#000000">${headline}</mj-text>
             <mj-text font-size="20px" line-height="40px" color="#000000">Dear ${formData.invitee},</mj-text>
             <mj-text font-size="20px" line-height="40px" color="#000000">${emailBody}</mj-text>

@@ -13,4 +13,5 @@ export type PersonalInput = {
     year?: string;
     message: string;
     rsvp: string;
+    banner?: string;
 };
