@@ -3,48 +3,64 @@ import { ProfessionalInput } from "../../types/professional-input";
 export function professionalFormData(data: ProfessionalInput): string {
     const {
         theme,
-        host,
-        invitee,
-        date,
-        time,
-        location,
-        food,
-        activities,
-        vibe,
-        age,
-        classYear,
-        year,
+        business,
+        customer,
+        purpose,
+        start,
+        end,
         message,
-    } = data;
+        disclaimer,
+        code
+    } = data as ProfessionalInput;
+
+    const getIntent = (theme: ProfessionalInput["theme"]) => {
+        switch (theme) {
+            case "announcement":
+                return "Write a professional announcement email sharing important business news.";
+            case "promotion":
+                return "Write a persuasive promotional email highlighting an offer, discount, or deal.";
+            case "invite":
+                return "Write an invitation email for a business event with clear details and RSVP encouragement.";
+            case "relation":
+                return "Write a personalized message to the customer base on the given information.";
+            default:
+                return "";
+        }
+    };
+
+    const isPromotion = theme === "promotion";
+    const isBusinessIntent = theme === "announcement" || theme === "relation";
+
+    const details = [
+        isPromotion && purpose && `Promotional Item: ${purpose}`,
+        isPromotion && code && `Use promo code: ${code}`,
+        isPromotion && start && `Promotion start date & time: ${start}`,
+        isPromotion && end && `Promotion end date & time: ${end}`,
+        isBusinessIntent && purpose && `Business intent: ${purpose}`
+    ].filter(Boolean).join("\n");
 
     return `
-Write a warm, engaging invitation email.
+BUSINESS INTENT: ${getIntent(theme)}
 
-Event: ${theme}
-Host: ${host}
-Guests: ${invitee}
-Date: ${date}
-Time: ${time}
-Location: ${location}
-Food: ${food}
-Activities: ${activities}
-Vibe: ${vibe}
+BUSINESS DETAILS:
+- Business Name: ${business}
+- Brand Tone: Professional, friendly, and clear
 
-Details:
-${theme === "birthday" && age ? `Celebrating ${age} years` : ""}
-${theme === "graduation" && classYear ? `Class of ${classYear}` : ""}
-${theme === "newyear" && year ? `Celebrating the year ${year}` : ""}
+RECIPIENT:
+- Customer Name: ${customer}
 
-Notes: ${message}
+CONTENT:
+- Key Info: ${message}
+${details ? `- Details: ${details}` : ""}
+${disclaimer ? `- Disclaimer: ${disclaimer}` : ""}
 
 Instructions:
-- Highlight what guests can expect
-- Make the event feel personal
-- Output to 2 lines with just 1 line break
-- If the vibe is playful, add emojis
+- Highlight what recipient can expect
+- Polish and make the message content feel personalized yet professional
 
 Output:
-- 1 concise line (for subject line, no need to label it for subject)
-- 1 line of text at max 50 words (for the message, no need to label it for message)
+${disclaimer
+            ? "Subject line, email message, and disclaimer (3 lines total)"
+            : "Subject line and email message (2 lines total)"}
 `;
 }

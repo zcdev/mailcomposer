@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         validationLevel: 'strict',
     });
     const headers = new Headers();
-    headers.append('Content-Disposition', 'attachment; filename=archive.zip');
+    headers.append('Content-Disposition', 'attachment; filename=MailComposer.zip');
     headers.append('Content-Type', 'application/zip');
 
     const bannerPath = path.join(

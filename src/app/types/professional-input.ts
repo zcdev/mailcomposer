@@ -1,16 +1,26 @@
 export type ProfessionalInput = {
     theme: string;
-    host: string;
-    invitee: string;
-    date: string;
-    time: string;
-    location: string;
-    food?: string;
-    activities: string;
-    vibe: string;
-    age?: string;
-    classYear?: string;
-    year?: string;
+    business: string;
+    address: string;
+    website?: string;
+    customer: string;
+    purpose: string;
+    start?: string;
+    end?: string;
+    location?: string;
     message: string;
-    rsvp: string;
+    disclaimer?: string;
+    unsub: string;
+    color?: string;
+    logo?: string;
+    text?: string;
+    cta?: string;
+    code?: string;
+};
+
+export type ThemeIntent = {
+    announcement: string;
+    promotion: string;
+    invite: string;
+    relation: string;
 };

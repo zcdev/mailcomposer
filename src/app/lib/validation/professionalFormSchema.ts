@@ -4,39 +4,39 @@ export const professionalFormSchema = z.object({
 
     theme: z.string()
         .refine(
-            (val) => ["birthday", "graduation", "wedding", "newyear"].includes(val), {
+            (val) => ["announcement", "promotion", "invite", "relation"].includes(val), {
             message: "Please select a theme.",
         }),
 
-    host: z.string().min(1, "Host name is required."),
+    business: z.string().min(1, "Business name is required.").max(20, "Must be 20 characters or fewer."),
 
-    invitee: z.string().min(1, "Invitee name is required."),
+    address: z.string().min(1, "Business address is required.").max(30, "Must be 30 characters or fewer."),
 
-    date: z.string().min(1, "Please select a date."),
+    website: z.url({ message: "Invalid website address." }).optional(),
 
-    time: z.string().min(1, "Please select a time."),
+    customer: z.string().min(1, "Customer name is required.").max(30, "Must be 30 characters or fewer."),
 
-    location: z.string().min(1, "Location is required."),
+    purpose: z.string().min(1, "Please provide a purpose for the email.").max(50, "Must be 50 characters or fewer."),
 
-    food: z.string().optional(),
+    start: z.string().max(20, "Must be 20 characters or fewer.").optional(),
 
-    activities: z.string().min(1, "Please enter at least one activity."),
+    end: z.string().max(20, "Must be 20 characters or fewer.").optional(),
 
-    vibe: z.string()
-        .refine(
-            (val) => ["formal", "friendly", "playful"].includes(val), {
-            message: "Please select a theme.",
-        }),
+    location: z.string().max(50, "Must be 50 characters or fewer.").optional(),
 
-    age: z.string().optional(),
+    message: z.string().min(1, "Message must not be empty.").max(500, "Must be 500 characters or fewer."),
 
-    classYear: z.string().optional(),
+    disclaimer: z.string().max(200, "Must be 200 characters or fewer.").optional(),
 
-    year: z.string().optional(),
+    unsub: z.url({ message: "Invalid or empty unsubscribe link." }),
 
-    message: z.string().min(1, "Message must not be empty."),
+    color: z.string().max(7, "Invalid entry.").optional(),
 
-    rsvp: z.url({ message: "Invalid website address." }),
+    logo: z.url({ message: "Invalid image link." }).optional(),
 
-    banner: z.url({ message: "Invalid website address." }).optional(),
+    text: z.string().max(20, "Must be 20 characters or fewer.").optional(),
+
+    cta: z.url({ message: "Invalid landing page address." }).optional(),
+
+    code: z.string().max(20, "Must be 20 characters or fewer.").optional(),
 });
