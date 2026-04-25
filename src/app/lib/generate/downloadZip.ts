@@ -1,9 +1,9 @@
-import { PromptInput } from "@/src/app/types/prompt";
+import { PersonalInput } from "@/src/app/types/personal-input";
 
-export async function downloadZip(emailData: string, formData: PromptInput) {
-    const subjectLineTxt = emailData.split('\n')[0]?.replace(/\*\*Subject:\*\*\s+/, "");
+export async function downloadZip(emailData: string, formData: PersonalInput) {
+    const subjectLineTxt = emailData.split('\n')[0]?.replace(/\*\*Subject:\*\*\s+/, "").trim();
 
-    const emailBodyMsg = emailData.split('\n')[1]?.replace(/\*\*Message:\*\*\s+/, "");
+    const emailBodyMsg = emailData.split('\n')[1]?.replace(/\*\*Message:\*\*\s+/, "").trim();
 
     const response = await fetch('/api/download', {
         method: "POST",
