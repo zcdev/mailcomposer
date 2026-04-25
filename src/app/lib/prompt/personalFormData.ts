@@ -1,6 +1,6 @@
-import { PromptInput } from "../../types/prompt";
+import { PersonalInput } from "../../types/personal-input";
 
-export function parseFormData(data: PromptInput): string {
+export function personalFormData(data: PersonalInput): string {
     const {
         theme,
         host,

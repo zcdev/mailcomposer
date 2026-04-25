@@ -1,5 +1,5 @@
-import { PromptInput } from "../types/prompt";
-export function personalTemplate(subject: string, emailBody: string, formData: PromptInput) {
+import { PersonalInput } from "../types/personal-input";
+export function personalTemplate(subject: string, emailBody: string, formData: PersonalInput) {
   const headline = formData.theme === "birthday" ? "Happy Birthday!" :
     formData.theme === "graduation" ? "Congrats, Grads!" :
       formData.theme === "wedding" ? "Cherish Forever" : "Happy New Year!";

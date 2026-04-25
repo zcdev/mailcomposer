@@ -1,4 +1,4 @@
-export type PromptInput = {
+export type PersonalInput = {
     theme: string;
     host: string;
     invitee: string;
