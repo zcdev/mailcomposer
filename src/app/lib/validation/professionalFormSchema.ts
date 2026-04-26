@@ -2,11 +2,9 @@ import { z } from "zod";
 
 export const professionalFormSchema = z.object({
 
-    theme: z.string()
-        .refine(
-            (val) => ["announcement", "promotion", "invite", "relation"].includes(val), {
-            message: "Please select a theme.",
-        }),
+    theme: z.enum(["announcement", "promotion", "invite", "relation"], {
+        error: () => ({ message: "Please select a theme." })
+    }),
 
     business: z.string().min(1, "Business name is required.").max(20, "Must be 20 characters or fewer."),
 

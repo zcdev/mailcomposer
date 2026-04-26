@@ -1,13 +1,13 @@
 'use client';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ProfessionalInput } from "../../types/professional-input";
 import { professionalFormSchema } from "../../lib/validation/professionalFormSchema";
 import { promptAI } from '../../lib/prompt/promptAI';
 import { professionalFormData } from '../../lib/prompt/professionalFormData';
 import { downloadZip } from '../../lib/generate/downloadZip';
 import Input from '../ui/Input';
 import Button from '../ui/Button';
-import { z } from 'zod';
 
 export default function ProfessionalForm() {
     const {
@@ -23,7 +23,7 @@ export default function ProfessionalForm() {
     const message = watch("message");
     const disclaimer = watch("disclaimer");
 
-    const onSubmit = async (data: z.infer<typeof professionalFormSchema>) => {
+    const onSubmit = async (data: ProfessionalInput) => {
         try {
             const promptData = professionalFormData(data);
             console.log("promptData", promptData);
@@ -49,7 +49,7 @@ export default function ProfessionalForm() {
                 <option value="relation">Customer Relationship (Welcome, Follow-up, Check-in, Outreach)</option>
             </select>
             {errors?.theme && <p className="text-orange-500">{errors.theme?.message}</p>}
-            {theme !== "" && (
+            {theme && (
                 <>
                     {theme === "promotion" && (
                         <Input

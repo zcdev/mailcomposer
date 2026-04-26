@@ -1,5 +1,5 @@
 export type ProfessionalInput = {
-    theme: string;
+    theme: "announcement" | "promotion" | "invite" | "relation";
     business: string;
     address: string;
     website?: string;
@@ -16,11 +16,4 @@ export type ProfessionalInput = {
     text?: string;
     cta?: string;
     code?: string;
-};
-
-export type ThemeIntent = {
-    announcement: string;
-    promotion: string;
-    invite: string;
-    relation: string;
 };

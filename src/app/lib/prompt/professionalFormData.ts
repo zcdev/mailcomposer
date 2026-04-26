@@ -11,7 +11,7 @@ export function professionalFormData(data: ProfessionalInput): string {
         message,
         disclaimer,
         code
-    } = data as ProfessionalInput;
+    } = data;
 
     const getIntent = (theme: ProfessionalInput["theme"]) => {
         switch (theme) {
