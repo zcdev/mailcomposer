@@ -1,5 +1,5 @@
 export type PersonalInput = {
-    theme: string;
+    theme: "birthday" | "graduation" | "wedding" | "newyear";
     host: string;
     invitee: string;
     date: string;
@@ -7,7 +7,7 @@ export type PersonalInput = {
     location: string;
     food?: string;
     activities: string;
-    vibe: string;
+    vibe: "formal" | "friendly" | "playful";
     age?: string;
     classYear?: string;
     year?: string;

@@ -1,0 +1,1 @@
+export const primaryButtonStyle = "primary-button inline-flex items-center justify-center px-6 py-3 mt-4 mr-8 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition";

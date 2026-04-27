@@ -1,10 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-import Wrapper from './components/layout/wrapper';
-import Header from '@/src/app/components/layout/header';
-import Content from '@/src/app/components/layout/content';
-import Footer from './components/layout/footer';
+import { primaryButtonStyle } from './components/ui';
+import Wrapper from '@/components/layout/wrapper';
+import Header from '@/components/layout/header';
+import Content from '@/components/layout/content';
+import Footer from '@/components/layout/footer';
+import Anchor from '@/components/ui/Anchor';
 
 export default function Home() {
 
@@ -14,8 +15,8 @@ export default function Home() {
         <Header />
         <Content />
         <section className="p-2">
-          <Link href="/professional" className="primary-button inline-flex items-center justify-center px-6 py-3 mt-4 mr-8 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition">Professional</Link>
-          <Link href="/personal" className="primary-button inline-flex items-center justify-center px-6 py-3 mt-4 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition">Personal</Link>
+          <Anchor href="/professional" className={primaryButtonStyle}>Professional</Anchor>
+          <Anchor href="/personal" className={primaryButtonStyle}>Personal</Anchor>
         </section>
       </main>
       <Footer />
