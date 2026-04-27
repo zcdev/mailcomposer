@@ -1,4 +1,4 @@
-import { PersonalInput } from "../types/personal-input";
+import { PersonalInput } from "@/types";
 export function personalTemplate(subject: string, emailBody: string, formData: PersonalInput) {
   const headline = formData.theme === "birthday" ? "Happy Birthday!" :
     formData.theme === "graduation" ? "Congrats, Grads!" :

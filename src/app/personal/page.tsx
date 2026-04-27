@@ -1,9 +1,9 @@
 'use client';
 
 import PersonalForm from "../components/mail-composer/PersonalForm";
-import Wrapper from '@/src/app/components/layout/wrapper';
-import Header from '@/src/app/components/layout/header';
-import Footer from '@/src/app/components/layout/footer';
+import Wrapper from '@/components/layout/wrapper';
+import Header from '@/components/layout/header';
+import Footer from '@/components/layout/footer';
 
 export default function PersonalPage() {
     return (

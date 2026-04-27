@@ -1,13 +1,16 @@
 'use client';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { personalFormSchema } from "../../lib/validation/personalFormSchema";
-import { promptAI } from '../../lib/prompt/promptAI';
-import { personalFormData } from '../../lib/prompt/personalFormData';
-import { downloadZip } from '../../lib/generate/downloadZip';
+import { PersonalInput, FieldConfig } from '@/types';
+import { personalFormSchema } from "@/lib/validation/personalFormSchema";
+import { promptAI } from '@/lib/prompt/promptAI';
+import { personalFormData } from '@/lib/prompt/personalFormData';
+import { downloadZip } from '@/lib/generate/downloadZip';
+import { primaryButtonStyle } from '@/components/ui';
 import Input from '../ui/Input';
+import TextArea from "../ui/TextArea";
 import Button from '../ui/Button';
-import { z } from 'zod';
+import Select from "../ui/Select";
 
 export default function PersonalForm() {
     const {
@@ -15,14 +18,11 @@ export default function PersonalForm() {
         watch,
         handleSubmit,
         formState: { errors, isSubmitting },
-    } = useForm({
+    } = useForm<PersonalInput>({
         resolver: zodResolver(personalFormSchema),
     });
 
-    const theme = watch("theme");
-    const message = watch("message");
-
-    const onSubmit = async (data: z.infer<typeof personalFormSchema>) => {
+    const onSubmit = async (data: PersonalInput) => {
         try {
             const promptData = personalFormData(data);
             console.log("promptData", promptData);
@@ -36,96 +36,130 @@ export default function PersonalForm() {
         }
     };
 
+    const values = watch();
+
+    const fields: FieldConfig<PersonalInput>[] = [
+        // Theme
+        {
+            name: "theme",
+            label: "Theme",
+            type: "select",
+            options: [
+                { label: "Select a theme for the event", value: "" },
+                { label: "Birthday", value: "birthday" },
+                { label: "Graduation", value: "graduation" },
+                { label: "New Year", value: "newyear" },
+                { label: "Wedding", value: "wedding" },
+            ],
+        },
+
+        // Vibe
+        {
+            name: "vibe",
+            label: "Vibe",
+            type: "select",
+            options: [
+                { label: "Select a vibe for the event", value: "" },
+                { label: "Formal", value: "formal" },
+                { label: "Friendly", value: "friendly" },
+                { label: "Playful", value: "playful" },
+            ],
+        },
+
+        // Theme-based input fields
+        {
+            name: "age",
+            label: "Age",
+            type: "input",
+            maxLength: 3,
+            showIf: (values) => values.theme === "birthday",
+        },
+        {
+            name: "classYear",
+            label: "Class Year",
+            type: "input",
+            maxLength: 4,
+            showIf: (values) => values.theme === "graduation",
+        },
+        {
+            name: "year",
+            label: "Year",
+            type: "input",
+            maxLength: 4,
+            showIf: (values) => values.theme === "newyear",
+        },
+
+        // Base fields
+        { name: "host", label: "Host", type: "input", placeholder: "Joy Johnson", minLength: 1, maxLength: 30 },
+        { name: "invitee", label: "Invitee", type: "input", placeholder: "Friends & Family", minLength: 1, maxLength: 30 },
+        { name: "date", label: "Date", type: "input", placeholder: "June 12, 2026", minLength: 1, maxLength: 15 },
+        { name: "time", label: "Time", type: "input", placeholder: "6:00 PM", minLength: 1, maxLength: 15 },
+        { name: "location", label: "Location", type: "input", placeholder: "123 Sunset Blvd", minLength: 1, maxLength: 50 },
+        { name: "food", label: "Food", type: "input", placeholder: "Optional" },
+        { name: "activities", label: "Activities", type: "input", placeholder: "Games, music", minLength: 1, maxLength: 30 },
+
+        // Message
+        {
+            name: "message",
+            label: "Message",
+            type: "textarea",
+            placeholder: "Add a personal note",
+            minLength: 1,
+            maxLength: 200,
+        },
+    ];
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl flex-col">
-            {/* Theme */}
-            <label htmlFor="theme" className="primary-color font-semibold block pt-4">Theme</label>
-            <select id="theme" {...register("theme")} className="w-full border border-black dark:border-white rounded-lg p-2">
-                <option value="">Select a theme for the event</option>
-                <option value="birthday">Birthday</option>
-                <option value="graduation">Graduation</option>
-                <option value="wedding">Wedding</option>
-                <option value="newyear">New Year</option>
-            </select>
-            {errors?.theme && <p className="text-orange-500">{errors.theme?.message}</p>}
+        <form onSubmit={handleSubmit(onSubmit)} className="maxLength-w-xl flex-col">
+            {fields.map((field) => {
 
-            {theme !== "" && (
-                <>
-                    {theme === "birthday" && (
-                        <Input
-                            label="Age"
-                            id="age"
-                            placeholder="20"
-                            {...register("age")}
-                            error={errors.age?.message}
+                if (field.showIf && !field.showIf(values)) return null;
+
+                if (field.type === "select") {
+                    return (
+                        <Select
+                            key={field.name}
+                            label={field.label}
+                            id={field.name}
+                            {...register(field.name)}
+                            error={errors[field.name]?.message}
+                            options={field.options}
                         />
-                    )}
+                    );
+                }
 
-                    {theme === "graduation" && (
+                if (field.type === "input") {
+                    return (
                         <Input
-                            label="Year of Class"
-                            id="classYear"
-                            placeholder={`${new Date().getFullYear()}`}
-                            {...register("classYear")}
-                            error={errors.classYear?.message}
+                            key={field.name}
+                            label={field.label}
+                            id={field.name}
+                            placeholder={field.placeholder}
+                            {...register(field.name)}
+                            error={errors[field.name]?.message}
                         />
-                    )}
+                    );
+                }
 
-                    {theme === "newyear" && (
-                        <Input
-                            label="Year"
-                            id="year"
-                            placeholder={`${new Date().getFullYear() + 1}`}
-                            {...register("year")}
-                            error={errors.year?.message}
+                if (field.type === "textarea") {
+                    return (
+                        <TextArea
+                            label={field.label}
+                            id={field.name}
+                            key={field.name}
+                            {...register(field.name)}
+                            placeholder={field.placeholder}
+                            value={field.value}
+                            minLength={field.minLength}
+                            maxLength={field.maxLength}
+                            error={errors[field.name]?.message}
+                            charCount={values[field.name]?.length ?? 0}
                         />
-                    )}
+                    );
+                }
+            })}
 
-                    {/* Basic fields */}
-                    <Input label="Host" id="host" placeholder="Joy Johnson"
-                        {...register("host")} error={errors.host?.message} />
-                    <Input label="Invitee" id="invitee" placeholder="Friends & Family"
-                        {...register("invitee")} error={errors.invitee?.message} />
-                    <Input label="Date" id="date" placeholder="June 12, 2026"
-                        {...register("date")} error={errors.date?.message} />
-                    <Input label="Time" id="time" placeholder="6:00 PM"
-                        {...register("time")} error={errors.time?.message} />
-                    <Input label="Location" id="location" placeholder="123 Sunset Blvd, Los Angeles"
-                        {...register("location")} error={errors.location?.message} />
-                    <Input label="Food" id="food" placeholder="Dinner, snacks, and drinks (Optional)"
-                        {...register("food")} error={errors.food?.message} />
-                    <Input label="Activities" id="activities" placeholder="Games, dancing, and live music"
-                        {...register("activities")} error={errors.activities?.message} />
-
-                    {/* vibe */}
-                    <label htmlFor="vibe" className="primary-color font-semibold block pt-4">Vibe</label>
-                    <select id="vibe" {...register("vibe")} className="block w-full border border-black dark:border-white rounded-lg p-2">
-                        <option value="">Select a vibe for the event</option>
-                        <option value="formal">Formal</option>
-                        <option value="friendly">Friendly</option>
-                        <option value="playful">Playful</option>
-                    </select>
-                    {errors.vibe && <p className="text-orange-500">{errors.vibe.message}</p>}
-
-                    <label htmlFor="message" className="primary-color font-semibold block pt-4">Message</label>
-                    <textarea
-                        id="message"
-                        maxLength={200}
-                        placeholder="Add a personal note"
-                        {...register("message")}
-                        className={`block w-full border border-black dark:border-white rounded-lg p-2 ${errors.message} ? focus:outline-2 focus:outline-orange-500: ""`}
-                    />
-
-                    <p className={errors.message ? "text-orange-500" : ""}>({message?.length ?? 0}/200) Characters<br />{errors.message?.message}</p>
-
-                    <Input label="RSVP Link" id="rsvp" placeholder="https://your-own-or-facebook-link-example.com"
-                        {...register("rsvp")} error={errors.rsvp?.message} />
-
-                    <Input label="Banner Link" id="banner" placeholder="https://your-own-banner-link-example.com/banner.png (Optional)"
-                        {...register("rsvp")} error={errors.banner?.message} />
-
-                    <Button type="submit" disabled={isSubmitting} className="primary-button inline-flex items-center justify-center px-6 py-3 mt-4 mr-8 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition">{isSubmitting ? "Generating..." : "Generate & Download"}</Button>
-                </>)}
+            <Button type="submit" disabled={isSubmitting} className={primaryButtonStyle}>{isSubmitting ? "Generating..." : "Generate & Download"}</Button>
         </form>
     );
 }

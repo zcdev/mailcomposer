@@ -1,4 +1,4 @@
-import { PersonalInput } from "../../types/personal-input";
+import { PersonalInput } from "@/types";
 
 export function personalFormData(data: PersonalInput): string {
     const {
