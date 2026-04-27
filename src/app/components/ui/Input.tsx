@@ -11,7 +11,7 @@ export default function Input({ label, error, name, ...props }: InputProps) {
 
             <input
                 name={name}
-                aria-invalname={!!error}
+                aria-invalid={!!error}
                 aria-describedby={error ? `${name}-error` : undefined}
                 {...props}
                 className="w-full border border-black dark:border-white rounded-lg p-2"
