@@ -1,5 +1,4 @@
-import { PersonalInput } from "@/src/app/types/personal-input";
-import { ProfessionalInput } from "@/src/app/types/professional-input";
+import { PersonalInput, ProfessionalInput } from "@/types";
 
 export async function downloadZip(emailData: string, formData: PersonalInput | ProfessionalInput) {
     const subjectLineTxt = emailData.split('\n')[0]?.replace(/\*\*Subject:\*\*\s+/, "").trim();

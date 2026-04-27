@@ -1,4 +1,4 @@
-import { ProfessionalInput } from "../../types/professional-input";
+import { ProfessionalInput } from "@/types";
 
 export function professionalFormData(data: ProfessionalInput): string {
     const {
