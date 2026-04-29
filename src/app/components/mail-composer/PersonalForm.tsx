@@ -1,5 +1,5 @@
 'use client';
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PersonalInput, FieldConfig } from '@/types';
 import { personalFormSchema } from "@/lib/validation/personalFormSchema";
@@ -15,7 +15,7 @@ import Select from "../ui/Select";
 export default function PersonalForm() {
     const {
         register,
-        watch,
+        control,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<PersonalInput>({
@@ -36,7 +36,9 @@ export default function PersonalForm() {
         }
     };
 
-    const values = watch();
+    const themeOption = useWatch({ control, name: "theme" });
+    const messageValue = useWatch({ control, name: "message" });
+    const currentYear = new Date().getFullYear();
 
     const fields: FieldConfig<PersonalInput>[] = [
         // Theme
@@ -71,22 +73,25 @@ export default function PersonalForm() {
             name: "age",
             label: "Age",
             type: "input",
+            placeholder: "25",
             maxLength: 3,
-            showIf: (values) => values.theme === "birthday",
+            showIf: (theme) => theme === "birthday",
         },
         {
             name: "classYear",
             label: "Class Year",
             type: "input",
+            placeholder: `${currentYear}`,
             maxLength: 4,
-            showIf: (values) => values.theme === "graduation",
+            showIf: (theme) => theme === "graduation",
         },
         {
             name: "year",
             label: "Year",
             type: "input",
+            placeholder: `${currentYear + 1}`,
             maxLength: 4,
-            showIf: (values) => values.theme === "newyear",
+            showIf: (theme) => theme === "newyear",
         },
 
         // Base fields
@@ -95,8 +100,10 @@ export default function PersonalForm() {
         { name: "date", label: "Date", type: "input", placeholder: "June 12, 2026", minLength: 1, maxLength: 15 },
         { name: "time", label: "Time", type: "input", placeholder: "6:00 PM", minLength: 1, maxLength: 15 },
         { name: "location", label: "Location", type: "input", placeholder: "123 Sunset Blvd", minLength: 1, maxLength: 50 },
-        { name: "food", label: "Food", type: "input", placeholder: "Optional" },
+        { name: "food", label: "Food", type: "input", placeholder: "Dinner, snacks, and drinks (Optional)" },
         { name: "activities", label: "Activities", type: "input", placeholder: "Games, music", minLength: 1, maxLength: 30 },
+        { name: "rsvp", label: "RSVP Link", type: "input", placeholder: "https://your-own-or-facebook-link-example.com", minLength: 1, maxLength: 100 },
+        { name: "banner", label: "Banner Link", type: "input", placeholder: "https://your-own-banner-link-example.com/banner.png (Optional)", minLength: 1, maxLength: 100 },
 
         // Message
         {
@@ -113,7 +120,7 @@ export default function PersonalForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="maxLength-w-xl flex-col">
             {fields.map((field) => {
 
-                if (field.showIf && !field.showIf(values)) return null;
+                if (field.showIf && !field.showIf(themeOption)) return null;
 
                 if (field.type === "select") {
                     return (
@@ -149,11 +156,10 @@ export default function PersonalForm() {
                             key={field.name}
                             {...register(field.name)}
                             placeholder={field.placeholder}
-                            value={field.value}
                             minLength={field.minLength}
                             maxLength={field.maxLength}
                             error={errors[field.name]?.message}
-                            charCount={values[field.name]?.length ?? 0}
+                            charCount={messageValue?.length ?? 0}
                         />
                     );
                 }

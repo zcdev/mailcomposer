@@ -34,5 +34,5 @@ export const personalFormSchema = z.object({
 
     rsvp: z.url({ message: "Invalid website address." }),
 
-    banner: z.url({ message: "Invalid website address." }).optional(),
+    banner: z.string().optional(),
 });
