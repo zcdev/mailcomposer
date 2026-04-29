@@ -13,7 +13,7 @@ export default function Select({ label, error, name, options, ...props }: Select
         <div>
             <label htmlFor={name} className="primary-color font-semibold block pt-4">{label}</label>
 
-            <select key={name} {...props} className="block w-full border border-black dark:border-white rounded-lg p-2">
+            <select name={name} {...props} className="block w-full border border-black dark:border-white rounded-lg p-2">
                 {options?.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                         {opt.label}

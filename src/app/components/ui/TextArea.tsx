@@ -13,7 +13,7 @@ export default function TextArea({ label, error, name, charCount, maxLength, min
             <label htmlFor={name} className="primary-color font-semibold block pt-4">{label}</label>
 
             <textarea
-                id={name}
+                name={name}
                 aria-invalid={!!error}
                 aria-describedby={error ? `${name}-error` : undefined}
                 {...props}
