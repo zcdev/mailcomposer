@@ -2,12 +2,13 @@ type TextAreaProps = {
     label: string;
     error?: string;
     name: string;
-    charCount?: number;
+    messageCharCount?: number;
+    disclaimerCharCount?: number;
     minLength?: number;
     maxLength?: number;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-export default function TextArea({ label, error, name, charCount, maxLength, minLength, ...props }: TextAreaProps) {
+export default function TextArea({ label, error, name, messageCharCount, disclaimerCharCount, maxLength, minLength, ...props }: TextAreaProps) {
     return (
         <div>
             <label htmlFor={name} className="primary-color font-semibold block pt-4">{label}</label>
@@ -22,7 +23,9 @@ export default function TextArea({ label, error, name, charCount, maxLength, min
                 maxLength={maxLength}
             />
 
-            <p className={error ? "text-orange-500" : ""}>{charCount}/{maxLength} Characters</p>
+            {name === "message" && <p className={error ? "text-orange-500" : ""}>{messageCharCount}/{maxLength} Characters</p>}
+
+            {name === "disclaimer" && <p className={error ? "text-orange-500" : ""}>{disclaimerCharCount}/{maxLength} Characters</p>}
 
             {error && (
                 <p id={`${name}-error`} role="alert" className="text-orange-500">

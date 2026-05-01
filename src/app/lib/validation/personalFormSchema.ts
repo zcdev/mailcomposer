@@ -32,7 +32,7 @@ export const personalFormSchema = z.object({
 
     message: z.string().min(30, "Message must be 30 characters or more.").max(200, "Must be 200 characters or fewer"),
 
-    rsvp: z.url({ message: "Invalid website address." }),
+    rsvp: z.url({ message: "Invalid website address." }).or(z.literal("")),
 
     banner: z.string().optional(),
 });

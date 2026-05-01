@@ -95,15 +95,33 @@ export default function PersonalForm() {
         },
 
         // Base fields
-        { name: "host", label: "Host", type: "input", placeholder: "Joy Johnson", minLength: 1, maxLength: 30 },
-        { name: "invitee", label: "Invitee", type: "input", placeholder: "Friends & Family", minLength: 1, maxLength: 30 },
-        { name: "date", label: "Date", type: "input", placeholder: "June 12, 2026", minLength: 1, maxLength: 15 },
-        { name: "time", label: "Time", type: "input", placeholder: "6:00 PM", minLength: 1, maxLength: 15 },
-        { name: "location", label: "Location", type: "input", placeholder: "123 Sunset Blvd", minLength: 1, maxLength: 50 },
-        { name: "food", label: "Food", type: "input", placeholder: "Dinner, snacks, and drinks (Optional)" },
-        { name: "activities", label: "Activities", type: "input", placeholder: "Games, music", minLength: 1, maxLength: 30 },
-        { name: "rsvp", label: "RSVP Link", type: "input", placeholder: "https://your-own-or-facebook-link-example.com", minLength: 1, maxLength: 100 },
-        { name: "banner", label: "Banner Link", type: "input", placeholder: "https://your-own-banner-link-example.com/banner.png (Optional)", minLength: 1, maxLength: 100 },
+        {
+            name: "host", label: "Host", type: "input", placeholder: "Joy Johnson", minLength: 1, maxLength: 30
+        },
+        {
+            name: "invitee", label: "Invitee", type: "input", placeholder: "Friends & Family", minLength: 1, maxLength: 30
+        },
+        {
+            name: "date", label: "Date", type: "input", placeholder: "June 12, 2026", minLength: 1, maxLength: 15
+        },
+        {
+            name: "time", label: "Time", type: "input", placeholder: "6:00 PM", minLength: 1, maxLength: 15
+        },
+        {
+            name: "location", label: "Location", type: "input", placeholder: "123 Sunset Blvd", minLength: 1, maxLength: 50
+        },
+        {
+            name: "food", label: "Food", type: "input", placeholder: "Dinner, snacks, and drinks (Optional)"
+        },
+        {
+            name: "activities", label: "Activities", type: "input", placeholder: "Games, music", minLength: 1, maxLength: 30
+        },
+        {
+            name: "rsvp", label: "RSVP Link", type: "input", placeholder: "https://your-own-or-facebook-link-example.com", minLength: 1, maxLength: 100
+        },
+        {
+            name: "banner", label: "Banner Link", type: "input", placeholder: "https://your-own-banner-link-example.com/banner.png (Optional)", minLength: 1, maxLength: 100
+        },
 
         // Message
         {
@@ -111,16 +129,16 @@ export default function PersonalForm() {
             label: "Message",
             type: "textarea",
             placeholder: "Add a personal note",
-            minLength: 1,
+            minLength: 30,
             maxLength: 200,
         },
     ];
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="maxLength-w-xl flex-col">
+        <form onSubmit={handleSubmit(onSubmit)} className="maxLength-w-xl flex flex-col">
             {fields.map((field) => {
 
-                if (field.showIf && !field.showIf(themeOption)) return null;
+                if (field.showIf && !field.showIf(themeOption ?? "")) return null;
 
                 if (field.type === "select") {
                     return (
@@ -159,10 +177,12 @@ export default function PersonalForm() {
                             minLength={field.minLength}
                             maxLength={field.maxLength}
                             error={errors[field.name]?.message}
-                            charCount={messageValue?.length ?? 0}
+                            messageCharCount={messageValue?.length ?? 0}
                         />
                     );
                 }
+
+                return null;
             })}
 
             <Button type="submit" disabled={isSubmitting} className={primaryButtonStyle}>{isSubmitting ? "Generating..." : "Generate & Download"}</Button>
