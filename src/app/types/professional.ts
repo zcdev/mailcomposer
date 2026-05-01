@@ -2,7 +2,7 @@ export type ProfessionalInput = {
     theme: "announcement" | "promotion" | "invite" | "relation";
     business: string;
     address: string;
-    website?: string;
+    website: string;
     customer: string;
     purpose: string;
     start?: string;
@@ -12,8 +12,8 @@ export type ProfessionalInput = {
     disclaimer?: string;
     unsub: string;
     color?: string;
-    logo?: string;
+    logo: string;
     text?: string;
-    cta?: string;
+    cta: string;
     code?: string;
 };

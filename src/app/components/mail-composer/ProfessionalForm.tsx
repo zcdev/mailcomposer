@@ -1,27 +1,26 @@
 'use client';
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProfessionalInput } from "../../types/professional-input";
-import { professionalFormSchema } from "../../lib/validation/professionalFormSchema";
-import { promptAI } from '../../lib/prompt/promptAI';
-import { professionalFormData } from '../../lib/prompt/professionalFormData';
-import { downloadZip } from '../../lib/generate/downloadZip';
+import { ProfessionalInput, FieldConfig } from "@/types/";
+import { professionalFormSchema } from "@/lib/validation/professionalFormSchema";
+import { promptAI } from '@/lib/prompt/promptAI';
+import { professionalFormData } from '@/lib/prompt/professionalFormData';
+import { downloadZip } from '@/lib/generate/downloadZip';
+import { primaryButtonStyle } from '@/components/ui';
 import Input from '../ui/Input';
+import TextArea from "../ui/TextArea";
 import Button from '../ui/Button';
+import Select from "../ui/Select";
 
 export default function ProfessionalForm() {
     const {
         register,
-        watch,
+        control,
         handleSubmit,
         formState: { errors, isSubmitting },
-    } = useForm({
+    } = useForm<ProfessionalInput>({
         resolver: zodResolver(professionalFormSchema),
     });
-
-    const theme = watch("theme");
-    const message = watch("message");
-    const disclaimer = watch("disclaimer");
 
     const onSubmit = async (data: ProfessionalInput) => {
         try {
@@ -37,113 +36,180 @@ export default function ProfessionalForm() {
         }
     };
 
+    const themeOption = useWatch({ control, name: "theme" });
+    const messageValue = useWatch({ control, name: "message" });
+    const disClaimerValue = useWatch({ control, name: "disclaimer" });
+    const currentYear = new Date().getFullYear();
+
+    const fields: FieldConfig<ProfessionalInput>[] = [
+        // Theme
+        {
+            name: "theme",
+            label: "Theme",
+            type: "select",
+            options: [
+                { label: "Select the theme of your email", value: "" },
+                { label: "Announcement (Company News, Updates, Product Launch)", value: "announcement" },
+                { label: "Promotion (Discount, Offer, Limited-time deal)", value: "promotion" },
+                { label: "Event Invitation (Seminar, Workshop, Meetup)", value: "invite" },
+                { label: "Customer Relationship (Welcome, Follow-up, Check-in, Outreach)", value: "relation" },
+            ],
+        },
+
+        // Theme-based input fields
+        {
+            name: "code",
+            label: "Promo Code",
+            type: "input",
+            placeholder: "$20OFFSOFTWARE",
+            maxLength: 20,
+            showIf: (theme) => theme === "promotion",
+        },
+        {
+            name: "start",
+            label: "Start Date & Time",
+            type: "input",
+            placeholder: `November 1st, ${currentYear}`,
+            maxLength: 20,
+            showIf: (theme) => theme === "promotion",
+        },
+        {
+            name: "end",
+            label: "End Date & Time",
+            type: "input",
+            placeholder: `January 1st, ${currentYear + 1}`,
+            maxLength: 20,
+            showIf: (theme) => theme === "promotion",
+        },
+        {
+            name: "purpose",
+            label: "Promotional Item",
+            type: "input",
+            placeholder: "Hybridger AI Software Suite",
+            minLength: 1,
+            maxLength: 50,
+            showIf: (theme) => theme === "promotion",
+        },
+        {
+            name: "purpose",
+            label: "Topic",
+            type: "input",
+            placeholder: "AI Software Development Workshop",
+            minLength: 1,
+            maxLength: 50,
+            showIf: (theme) => theme !== "promotion",
+        },
+        {
+            name: "location",
+            label: "Event Location",
+            type: "input",
+            placeholder: "1st Street, Industrial City, CA 99999",
+            maxLength: 50,
+            showIf: (theme) => theme === "invite",
+        },
+
+        // Base fields
+        {
+            name: "business", label: "Business Name", type: "input", placeholder: "Hybridger, Inc.", minLength: 1, maxLength: 30,
+        },
+        {
+            name: "address", label: "Business Address", type: "input", placeholder: "1st Main Street, Hybrid City, CA 99999", minLength: 1, maxLength: 30,
+        },
+        {
+            name: "website", label: "Business Website", type: "input", placeholder: "https://www.your-company.com", minLength: 1, maxLength: 100,
+        },
+        {
+            name: "customer", label: "Customer Name", type: "input", placeholder: "Joy Johnson", minLength: 1, maxLength: 15,
+        },
+
+        // Official fields
+        {
+            name: "message",
+            label: "Message",
+            type: "textarea",
+            placeholder: "",
+            minLength: 50,
+            maxLength: 500,
+        },
+        {
+            name: "disclaimer",
+            label: "Disclaimer",
+            type: "textarea",
+            placeholder: "",
+            maxLength: 200,
+        },
+        {
+            name: "unsub", label: "Unsubscribe Link", type: "input", placeholder: "https://your-company.com/unsubscribe", minLength: 1, maxLength: 50,
+        },
+
+        // Templating fields
+        {
+            name: "color", label: "Brand Color", type: "input", placeholder: "#ff0000 (Optional)", maxLength: 7,
+        },
+        {
+            name: "logo", label: "Logo Link", type: "input", placeholder: "https://your-company.com/logo.png (Optional)", maxLength: 200,
+        },
+        {
+            name: "text", label: "Button Text", type: "input", placeholder: "Join now (Optional)", minLength: 1, maxLength: 20,
+        },
+        {
+            name: "cta", label: "Button Link", type: "input", placeholder: "https://your-company.com/landing-page (Optional)", minLength: 1, maxLength: 100,
+        },
+    ];
+
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl flex-col">
-            {/* theme */}
-            <label htmlFor="theme" className="primary-color font-semibold block pt-4">Theme</label>
-            <select id="theme" {...register("theme")} className="w-full border border-black rounded-lg p-2">
-                <option value="">Select the theme of your email</option>
-                <option value="announcement">Announcement (Company News, Updates, Product Launch)</option>
-                <option value="promotion">Promotion (Discount, Offer, Limited-time deal)</option>
-                <option value="invite">Event Invitation (Seminar, Workshop, Meetup)</option>
-                <option value="relation">Customer Relationship (Welcome, Follow-up, Check-in, Outreach)</option>
-            </select>
-            {errors?.theme && <p className="text-orange-500">{errors.theme?.message}</p>}
-            {theme && (
-                <>
-                    {theme === "promotion" && (
-                        <Input
-                            label="Promo Code"
-                            id="code"
-                            placeholder="OFF20SOFTWARE"
-                            {...register("code")}
-                            error={errors.code?.message}
+            {fields.map((field) => {
+
+                if (field.showIf && !field.showIf(themeOption ?? "")) return null;
+
+                if (field.type === "select") {
+                    return (
+                        <Select
+                            key={field.name}
+                            label={field.label}
+                            id={field.name}
+                            {...register(field.name)}
+                            error={errors[field.name]?.message}
+                            options={field.options}
                         />
-                    )}
+                    );
+                }
 
-                    {/* Basic fields */}
-                    <Input label="Business Name" id="business" placeholder="Hybridger, Inc."
-                        {...register("business")} error={errors.business?.message} />
-                    <Input label="Business Address" id="address" placeholder="1st Main Street, Hybrid City, CA 99999"
-                        {...register("address")} error={errors.address?.message} />
-                    <Input label="Business Website" id="websute" placeholder="https://www.your-company.com"
-                        {...register("website")} error={errors.website?.message} />
-                    <Input label="Customer Name" id="customer" placeholder="Joy Johnson"
-                        {...register("customer")} error={errors.customer?.message} />
+                if (field.type === "input") {
+                    return (
+                        <Input
+                            key={field.name}
+                            label={field.label}
+                            id={field.name}
+                            placeholder={field.placeholder}
+                            {...register(field.name)}
+                            error={errors[field.name]?.message}
+                        />
+                    );
+                }
 
-                    {(theme === "announcement" || theme === "relation") && (
-                        <Input label="Purpose" id="purpose" placeholder="What is this about?"
-                            {...register("purpose")} error={errors.purpose?.message} />
-                    )}
+                if (field.type === "textarea") {
+                    return (
+                        <TextArea
+                            label={field.label}
+                            id={field.name}
+                            key={field.name}
+                            {...register(field.name)}
+                            placeholder={field.placeholder}
+                            minLength={field.minLength}
+                            maxLength={field.maxLength}
+                            error={errors[field.name]?.message}
+                            messageCharCount={messageValue?.length ?? 0}
+                            disclaimerCharCount={disClaimerValue?.length ?? 0}
+                        />
+                    );
+                }
 
-                    {theme === "promotion" && (
-                        <Input label="Promotional Item" id="purpose" placeholder="Hybridger AI Software Suite"
-                            {...register("purpose")} error={errors.purpose?.message} />
-                    )}
+                return null;
+            })}
 
-                    {theme === "invite" && (
-                        <Input label="Topic" id="purpose" placeholder="AI Coding Workshop"
-                            {...register("purpose")} error={errors.purpose?.message} />
-                    )}
-
-                    {theme === "promotion" || theme === "invite" && (
-                        <>
-                            <Input label="Start Date & Time" id="start" placeholder="When does it start?"
-                                {...register("start")} error={errors.start?.message} />
-                            <Input label="End Date & Time" id="end" placeholder="When does it end?"
-                                {...register("end")} error={errors.end?.message} />
-                        </>
-                    )}
-
-                    {theme === "invite" && (
-                        <Input label="Location" id="location" placeholder="Where?"
-                            {...register("location")} error={errors.location?.message} />
-                    )}
-
-                    {/* Message */}
-                    <label htmlFor="message" className="primary-color font-semibold block pt-4">Message</label>
-
-                    <textarea
-                        id="message"
-                        maxLength={500}
-                        placeholder="Enter additional required important information"
-                        {...register("message")}
-                        className={`block w-full border border-black rounded-lg p-2 ${errors.message} ? focus:outline-2 focus:outline-orange-500: ""`}
-                    />
-
-                    <p className={errors.message ? "text-orange-500" : ""}>({message?.length ?? 0}/500) Characters<br />{errors.message?.message}</p>
-
-                    {/* Disclaimer */}
-                    <label htmlFor="disclaimer" className="primary-color font-semibold block pt-4">Disclaimer</label>
-
-                    <textarea
-                        id="disclaimer"
-                        maxLength={200}
-                        placeholder="Add disclaimer (Optional)"
-                        {...register("disclaimer")}
-                        className={`block w-full border border-black rounded-lg p-2 ${errors.disclaimer} ? focus:outline-2 focus:outline-orange-500: ""`}
-                    />
-
-                    <p className={errors.disclaimer ? "text-orange-500" : ""}>({disclaimer?.length ?? 0}/200) Characters<br />{errors.disclaimer?.message}</p>
-
-                    {/* Unsubscribe Link */}
-                    <Input label="Unsubscribe Link" id="unsub" placeholder="https://your-company.com/unsubscribe"
-                        {...register("unsub")} error={errors.unsub?.message} />
-
-                    {/* For templating */}
-                    <Input label="Brand Color" id="color" placeholder="#ff0000 (Optional)"
-                        {...register("color")} error={errors.color?.message} />
-                    <Input label="Logo Link" id="logo" placeholder="https://your-company.com/logo.png (Optional)"
-                        {...register("logo")} error={errors.logo?.message} />
-
-                    {/* Note: Button Text & Link are dependent */}
-                    <Input label="Button Text" id="text" placeholder="Join now (Optional)"
-                        {...register("text")} error={errors.text?.message} />
-                    <Input label="Button Link" id="cta" placeholder="https://your-company.com/landing-page (Optional)"
-                        {...register("cta")} error={errors.cta?.message} />
-
-                    <Button type="submit" disabled={isSubmitting} className="primary-button inline-flex items-center justify-center px-6 py-3 mt-4 mr-8 text-lg text-white font-semibold rounded-lg hover:opacity-80 transition">{isSubmitting ? "Generating..." : "Generate & Download"}</Button>
-                </>)}
+            <Button type="submit" disabled={isSubmitting} className={primaryButtonStyle}>{isSubmitting ? "Generating..." : "Generate & Download"}</Button>
         </form>
     );
 }

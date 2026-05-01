@@ -1,7 +1,7 @@
 export * from './personal';
 export * from './professional';
 
-import { PersonalInput } from "@/types";
+import { PersonalInput, ProfessionalInput } from "@/types";
 
 export type FieldConfig<T> = {
     name: keyof T;
@@ -12,5 +12,5 @@ export type FieldConfig<T> = {
     value?: string;
     type?: "input" | "textarea" | "select";
     options?: { label: string; value: string; }[];
-    showIf?: (theme: PersonalInput["theme"]) => boolean;
+    showIf?: (theme: PersonalInput["theme"] | ProfessionalInput["theme"]) => boolean;
 };

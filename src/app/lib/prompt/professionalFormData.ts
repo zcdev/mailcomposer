@@ -29,7 +29,7 @@ export function professionalFormData(data: ProfessionalInput): string {
     };
 
     const isPromotion = theme === "promotion";
-    const isBusinessIntent = theme === "announcement" || theme === "relation";
+    const isBusinessIntent = theme !== "promotion";
 
     const details = [
         isPromotion && purpose && `Promotional Item: ${purpose}`,
