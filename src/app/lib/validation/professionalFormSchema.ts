@@ -14,11 +14,19 @@ export const professionalFormSchema = z.object({
 
     customer: z.string().min(1, "Customer name is required.").max(30, "Must be 30 characters or fewer."),
 
-    purpose: z.string().min(1, "Please provide a purpose for the email.").max(50, "Must be 50 characters or fewer."),
+    item: z.string().max(50, "Must be 50 characters or fewer.").optional(),
+
+    topic: z.string().max(50, "Must be 50 characters or fewer.").optional(),
 
     start: z.string().max(20, "Must be 20 characters or fewer.").optional(),
 
     end: z.string().max(20, "Must be 20 characters or fewer.").optional(),
+
+    datetime: z.string().max(50, "Must be 50 characters or fewer.").optional(),
+
+    speakers: z.string().max(100, "Must be 100 characters or fewer.").optional(),
+
+    agenda: z.string().max(200, "Must be 150 characters or fewer.").optional(),
 
     location: z.string().max(50, "Must be 50 characters or fewer.").optional(),
 
@@ -28,13 +36,15 @@ export const professionalFormSchema = z.object({
 
     unsub: z.url({ message: "Invalid or empty unsubscribe link." }),
 
-    color: z.string().max(7, "Invalid entry.").optional(),
+    color: z.string().min(1, "Must provide a brand color.").max(7, "Hex color code must be 7 characters."),
 
-    logo: z.url({ message: "Invalid image link." }).or(z.literal("")),
+    logo: z.url({ message: "Empty or invalid image link." }),
+
+    picture: z.url({ message: "Invalid image link." }).or(z.literal("")).optional(),
 
     text: z.string().max(20, "Must be 20 characters or fewer.").optional(),
 
-    cta: z.url({ message: "Invalid landing page address." }).or(z.literal("")),
+    cta: z.url({ message: "Invalid landing page address." }).or(z.literal("")).optional(),
 
     code: z.string().max(20, "Must be 20 characters or fewer.").optional(),
 });

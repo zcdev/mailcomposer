@@ -4,10 +4,14 @@ export function professionalFormData(data: ProfessionalInput): string {
     const {
         theme,
         business,
-        customer,
-        purpose,
+        item,
+        topic,
         start,
         end,
+        datetime,
+        speakers,
+        agenda,
+        location,
         message,
         disclaimer,
         code
@@ -30,13 +34,18 @@ export function professionalFormData(data: ProfessionalInput): string {
 
     const isPromotion = theme === "promotion";
     const isBusinessIntent = theme !== "promotion";
+    const isBusinessEvent = theme === "invite";
 
     const details = [
-        isPromotion && purpose && `Promotional Item: ${purpose}`,
+        isPromotion && item && `Promotional Item: ${item}`,
         isPromotion && code && `Use promo code: ${code}`,
         isPromotion && start && `Promotion start date & time: ${start}`,
         isPromotion && end && `Promotion end date & time: ${end}`,
-        isBusinessIntent && purpose && `Business intent: ${purpose}`
+        isBusinessIntent && topic && `Business intent: ${topic}`,
+        isBusinessEvent && datetime && `Event Date & Time: ${datetime}`,
+        isBusinessEvent && speakers && `Event Speakers: ${speakers}`,
+        isBusinessEvent && agenda && `Event Agenda: ${agenda}`,
+        isBusinessEvent && location && `Event Location: ${location}`,
     ].filter(Boolean).join("\n");
 
     return `
@@ -46,15 +55,13 @@ BUSINESS DETAILS:
 - Business Name: ${business}
 - Brand Tone: Professional, friendly, and clear
 
-RECIPIENT:
-- Customer Name: ${customer}
-
 CONTENT:
 - Key Info: ${message}
 ${details ? `- Details: ${details}` : ""}
 ${disclaimer ? `- Disclaimer: ${disclaimer}` : ""}
 
 Instructions:
+- No greeting
 - Highlight what recipient can expect
 - Polish and make the message content feel personalized yet professional
 

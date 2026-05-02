@@ -42,7 +42,7 @@ export default function ProfessionalForm() {
     const currentYear = new Date().getFullYear();
 
     const fields: FieldConfig<ProfessionalInput>[] = [
-        // Theme
+        // ───────────────────────── Theme ─────────────────────────
         {
             name: "theme",
             label: "Theme",
@@ -56,7 +56,15 @@ export default function ProfessionalForm() {
             ],
         },
 
-        // Theme-based input fields
+        // ─────────────────── Theme-based fields ───────────────────
+        {
+            name: "picture",
+            label: "Picture",
+            type: "input",
+            placeholder: "https://your-company.com/picture.png (Optional, 400px wide)",
+            maxLength: 200,
+            showIf: (theme) => theme === "announcement" || theme === "promotion",
+        },
         {
             name: "code",
             label: "Promo Code",
@@ -82,7 +90,7 @@ export default function ProfessionalForm() {
             showIf: (theme) => theme === "promotion",
         },
         {
-            name: "purpose",
+            name: "item",
             label: "Promotional Item",
             type: "input",
             placeholder: "Hybridger AI Software Suite",
@@ -91,13 +99,37 @@ export default function ProfessionalForm() {
             showIf: (theme) => theme === "promotion",
         },
         {
-            name: "purpose",
+            name: "topic",
             label: "Topic",
             type: "input",
             placeholder: "AI Software Development Workshop",
             minLength: 1,
             maxLength: 50,
             showIf: (theme) => theme !== "promotion",
+        },
+        {
+            name: "datetime",
+            label: "Event Date & Time",
+            type: "input",
+            placeholder: `May 5th, ${currentYear}`,
+            maxLength: 50,
+            showIf: (theme) => theme === "invite",
+        },
+        {
+            name: "speakers",
+            label: "Speakers",
+            type: "input",
+            placeholder: "Hybrider Software Engineering Team",
+            maxLength: 100,
+            showIf: (theme) => theme === "invite",
+        },
+        {
+            name: "agenda",
+            label: "Agenda",
+            type: "input",
+            placeholder: "Demo, open Q&A on AI agent dev handoffs, breakout, networking",
+            maxLength: 200,
+            showIf: (theme) => theme === "invite",
         },
         {
             name: "location",
@@ -107,22 +139,60 @@ export default function ProfessionalForm() {
             maxLength: 50,
             showIf: (theme) => theme === "invite",
         },
+        {
+            name: "text",
+            label: "Button Text",
+            type: "input",
+            placeholder: "Join now (Optional)",
+            minLength: 1,
+            maxLength: 20,
+            showIf: (theme) => theme !== "relation",
+        },
+        {
+            name: "cta",
+            label: "Button Link",
+            type: "input",
+            placeholder: "https://your-company.com/landing-page (Optional)",
+            minLength: 1,
+            maxLength: 100,
+            showIf: (theme) => theme !== "relation",
+        },
 
-        // Base fields
+        // ───────────────────── Base fields ─────────────────────
         {
-            name: "business", label: "Business Name", type: "input", placeholder: "Hybridger, Inc.", minLength: 1, maxLength: 30,
+            name: "business",
+            label: "Business Name",
+            type: "input",
+            placeholder: "Hybridger, Inc.",
+            minLength: 1,
+            maxLength: 30,
         },
         {
-            name: "address", label: "Business Address", type: "input", placeholder: "1st Main Street, Hybrid City, CA 99999", minLength: 1, maxLength: 30,
+            name: "address",
+            label: "Business Address",
+            type: "input",
+            placeholder: "1st Main Street, Hybrid City, CA 99999",
+            minLength: 1,
+            maxLength: 30,
         },
         {
-            name: "website", label: "Business Website", type: "input", placeholder: "https://www.your-company.com", minLength: 1, maxLength: 100,
+            name: "website",
+            label: "Business Website",
+            type: "input",
+            placeholder: "https://www.your-company.com",
+            minLength: 1,
+            maxLength: 100,
         },
         {
-            name: "customer", label: "Customer Name", type: "input", placeholder: "Joy Johnson", minLength: 1, maxLength: 15,
+            name: "customer",
+            label: "Customer Name",
+            type: "input",
+            placeholder: "Joy Johnson",
+            minLength: 1,
+            maxLength: 15,
         },
 
-        // Official fields
+        // ─────────────────── Official fields ───────────────────
         {
             name: "message",
             label: "Message",
@@ -139,26 +209,36 @@ export default function ProfessionalForm() {
             maxLength: 200,
         },
         {
-            name: "unsub", label: "Unsubscribe Link", type: "input", placeholder: "https://your-company.com/unsubscribe", minLength: 1, maxLength: 50,
+            name: "unsub",
+            label: "Unsubscribe Link",
+            type: "input",
+            placeholder: "https://your-company.com/unsubscribe",
+            minLength: 1,
+            maxLength: 50,
         },
 
-        // Templating fields
+        // ─────────────────── Templating fields ───────────────────
         {
-            name: "color", label: "Brand Color", type: "input", placeholder: "#ff0000 (Optional)", maxLength: 7,
+            name: "color",
+            label: "Brand Color",
+            type: "input",
+            placeholder: "#ff0000",
+            minLength: 1,
+            maxLength: 7,
         },
         {
-            name: "logo", label: "Logo Link", type: "input", placeholder: "https://your-company.com/logo.png (Optional)", maxLength: 200,
-        },
-        {
-            name: "text", label: "Button Text", type: "input", placeholder: "Join now (Optional)", minLength: 1, maxLength: 20,
-        },
-        {
-            name: "cta", label: "Button Link", type: "input", placeholder: "https://your-company.com/landing-page (Optional)", minLength: 1, maxLength: 100,
+            name: "logo",
+            label: "Logo Link",
+            type: "input",
+            placeholder: "https://your-company.com/logo.png (200px wide)",
+            maxLength: 200,
         },
     ];
 
+    const onError = (err: any) => console.log("ERROR", err);
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl flex-col">
+        <form onSubmit={handleSubmit(onSubmit, onError)} className="max-w-xl flex-col">
             {fields.map((field) => {
 
                 if (field.showIf && !field.showIf(themeOption ?? "")) return null;
