@@ -45,7 +45,7 @@ export function personalTemplate(subject: string, emailBody: string, formData: P
             <mj-text font-size="20px" line-height="40px" color="#000000">
             See you, ${formData.host}
             </mj-text>
-            <mj-divider border-width="1px" border-style="dashed" border-color="lightgrey" padding="20px 20px" />
+            <mj-divider border-width="1px" border-style="dashed" border-color="#dddddd" padding="20px 20px" />
             <mj-table width="250px" align="center" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td style="padding: 10px 0px; text-align: center; background-color: #ecedee; border-radius: 3px;">

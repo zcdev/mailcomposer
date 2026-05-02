@@ -4,7 +4,6 @@ export function personalFormData(data: PersonalInput): string {
     const {
         theme,
         host,
-        invitee,
         date,
         time,
         location,
@@ -22,7 +21,6 @@ Write a warm, engaging invitation email.
 
 Event: ${theme}
 Host: ${host}
-Guests: ${invitee}
 Date: ${date}
 Time: ${time}
 Location: ${location}
@@ -44,7 +42,7 @@ Instructions:
 - If the vibe is playful, add emojis
 
 Output:
-- 1 concise line (for subject line, no need to label it for subject)
-- 1 line of text at max 50 words (for the message, no need to label it for message)
+- Subject line (concise, no labels)
+- Message (max 50 words, no labels)
 `;
 }
