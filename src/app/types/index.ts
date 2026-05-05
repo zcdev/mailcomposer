@@ -18,8 +18,14 @@ export type FieldConfig<T> = {
 export type ThemeBase = {
     subject: string;
     emailBody: string;
-    logo: string;
     color: string;
     currentYear: string;
     formData: ProfessionalInput;
-}
+};
+
+export type TemplatePartials = Pick<ProfessionalInput, "picture" | "disclaimers"> & {
+    button?: string;
+    header?: string;
+    footer?: string;
+};
+

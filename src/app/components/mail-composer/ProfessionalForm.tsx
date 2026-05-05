@@ -38,7 +38,7 @@ export default function ProfessionalForm() {
 
     const themeOption = useWatch({ control, name: "theme" });
     const messageValue = useWatch({ control, name: "message" });
-    const disClaimerValue = useWatch({ control, name: "disclaimer" });
+    const disClaimerValue = useWatch({ control, name: "disclaimers" });
     const currentYear = new Date().getFullYear();
 
     const fields: FieldConfig<ProfessionalInput>[] = [
@@ -55,15 +55,95 @@ export default function ProfessionalForm() {
                 { label: "Customer Relationship (Welcome, Follow-up, Check-in, Outreach)", value: "relation" },
             ],
         },
-
-        // ─────────────────── Theme-based fields ───────────────────
         {
-            name: "picture",
-            label: "Picture",
+            name: "item",
+            label: "Promotional Item",
             type: "input",
-            placeholder: "https://your-company.com/picture.png (Optional, 400px wide)",
+            placeholder: "HyBridger AI Software Suite",
+            minLength: 1,
+            maxLength: 50,
+            showIf: (theme) => theme === "promotion",
+        },
+        {
+            name: "topic",
+            label: "Topic",
+            type: "input",
+            placeholder: "AI Software Development Workshop",
+            minLength: 1,
+            maxLength: 50,
+            showIf: (theme) => theme !== "promotion",
+        },
+        // ───────────────────── Required fields ─────────────────────
+        {
+            name: "customer",
+            label: "Customer Name",
+            type: "input",
+            placeholder: "Joy Johnson",
+            minLength: 1,
+            maxLength: 15,
+        },
+        {
+            name: "business",
+            label: "Business Name",
+            type: "input",
+            placeholder: "HyBridger, Inc.",
+            minLength: 1,
+            maxLength: 30,
+        },
+        {
+            name: "address",
+            label: "Business Address",
+            type: "input",
+            placeholder: "1st Main Street, Hybrid City, CA 99999",
+            minLength: 1,
+            maxLength: 40,
+        },
+        {
+            name: "color",
+            label: "Brand Color",
+            type: "input",
+            placeholder: "#ff0000",
+            minLength: 1,
+            maxLength: 7,
+        },
+        {
+            name: "website",
+            label: "Business Website",
+            type: "input",
+            placeholder: "https://www.your-company.com",
+            minLength: 1,
+            maxLength: 100,
+        },
+        {
+            name: "logo",
+            label: "Logo Link",
+            type: "input",
+            placeholder: "https://your-company.com/logo.png (200px wide)",
+            maxLength: 100,
+        },
+        {
+            name: "unsub",
+            label: "Unsubscribe Link",
+            type: "input",
+            placeholder: "https://your-company.com/unsubscribe",
+            minLength: 1,
+            maxLength: 100,
+        },
+        {
+            name: "message",
+            label: "Message",
+            type: "textarea",
+            placeholder: "Enter required additional information",
+            minLength: 50,
+            maxLength: 500,
+        },
+        // ───────────────────── Conditional or optional fields ─────────────────────
+        {
+            name: "disclaimers",
+            label: "Disclaimers",
+            type: "textarea",
+            placeholder: "Add disclaimers (Optional)",
             maxLength: 200,
-            showIf: (theme) => theme === "announcement" || theme === "promotion",
         },
         {
             name: "code",
@@ -78,7 +158,7 @@ export default function ProfessionalForm() {
             label: "Start Date & Time",
             type: "input",
             placeholder: `November 1st, ${currentYear}`,
-            maxLength: 20,
+            maxLength: 40,
             showIf: (theme) => theme === "promotion",
         },
         {
@@ -86,32 +166,14 @@ export default function ProfessionalForm() {
             label: "End Date & Time",
             type: "input",
             placeholder: `January 1st, ${currentYear + 1}`,
-            maxLength: 20,
+            maxLength: 40,
             showIf: (theme) => theme === "promotion",
-        },
-        {
-            name: "item",
-            label: "Promotional Item",
-            type: "input",
-            placeholder: "Hybridger AI Software Suite",
-            minLength: 1,
-            maxLength: 50,
-            showIf: (theme) => theme === "promotion",
-        },
-        {
-            name: "topic",
-            label: "Topic",
-            type: "input",
-            placeholder: "AI Software Development Workshop",
-            minLength: 1,
-            maxLength: 50,
-            showIf: (theme) => theme !== "promotion",
         },
         {
             name: "datetime",
             label: "Event Date & Time",
             type: "input",
-            placeholder: `May 5th, ${currentYear}`,
+            placeholder: `May 5th, ${currentYear}, 5:00 PM`,
             maxLength: 50,
             showIf: (theme) => theme === "invite",
         },
@@ -119,7 +181,7 @@ export default function ProfessionalForm() {
             name: "speakers",
             label: "Speakers",
             type: "input",
-            placeholder: "Hybrider Software Engineering Team",
+            placeholder: "HyBridger Software Engineering Team",
             maxLength: 100,
             showIf: (theme) => theme === "invite",
         },
@@ -136,8 +198,17 @@ export default function ProfessionalForm() {
             label: "Event Location",
             type: "input",
             placeholder: "1st Street, Industrial City, CA 99999",
-            maxLength: 50,
+            maxLength: 100,
             showIf: (theme) => theme === "invite",
+        },
+        {
+            name: "cta",
+            label: "Button Link",
+            type: "input",
+            placeholder: "https://your-company.com/landing-page (Optional)",
+            minLength: 1,
+            maxLength: 100,
+            showIf: (theme) => theme !== "relation",
         },
         {
             name: "text",
@@ -149,96 +220,19 @@ export default function ProfessionalForm() {
             showIf: (theme) => theme !== "relation",
         },
         {
-            name: "cta",
-            label: "Button Link",
+            name: "picture",
+            label: "Picture",
             type: "input",
-            placeholder: "https://your-company.com/landing-page (Optional)",
-            minLength: 1,
+            placeholder: "https://your-company.com/product-picture.png (Optional, 400px wide)",
             maxLength: 100,
-            showIf: (theme) => theme !== "relation",
-        },
-
-        // ───────────────────── Base fields ─────────────────────
-        {
-            name: "business",
-            label: "Business Name",
-            type: "input",
-            placeholder: "Hybridger, Inc.",
-            minLength: 1,
-            maxLength: 30,
-        },
-        {
-            name: "address",
-            label: "Business Address",
-            type: "input",
-            placeholder: "1st Main Street, Hybrid City, CA 99999",
-            minLength: 1,
-            maxLength: 30,
-        },
-        {
-            name: "website",
-            label: "Business Website",
-            type: "input",
-            placeholder: "https://www.your-company.com",
-            minLength: 1,
-            maxLength: 100,
-        },
-        {
-            name: "customer",
-            label: "Customer Name",
-            type: "input",
-            placeholder: "Joy Johnson",
-            minLength: 1,
-            maxLength: 15,
-        },
-
-        // ─────────────────── Official fields ───────────────────
-        {
-            name: "message",
-            label: "Message",
-            type: "textarea",
-            placeholder: "",
-            minLength: 50,
-            maxLength: 500,
-        },
-        {
-            name: "disclaimer",
-            label: "Disclaimer",
-            type: "textarea",
-            placeholder: "",
-            maxLength: 200,
-        },
-        {
-            name: "unsub",
-            label: "Unsubscribe Link",
-            type: "input",
-            placeholder: "https://your-company.com/unsubscribe",
-            minLength: 1,
-            maxLength: 50,
-        },
-
-        // ─────────────────── Templating fields ───────────────────
-        {
-            name: "color",
-            label: "Brand Color",
-            type: "input",
-            placeholder: "#ff0000",
-            minLength: 1,
-            maxLength: 7,
-        },
-        {
-            name: "logo",
-            label: "Logo Link",
-            type: "input",
-            placeholder: "https://your-company.com/logo.png (200px wide)",
-            maxLength: 200,
+            showIf: (theme) => theme === "announcement" || theme === "promotion",
         },
     ];
 
     const onError = (err: any) => console.log("ERROR", err);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit, onError)} className="max-w-xl flex-col">
+        <form onSubmit={handleSubmit(onSubmit, onError)} className="max-w-xl flex flex-col">
             {fields.map((field) => {
 
                 if (field.showIf && !field.showIf(themeOption ?? "")) return null;

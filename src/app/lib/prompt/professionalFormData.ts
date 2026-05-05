@@ -13,7 +13,7 @@ export function professionalFormData(data: ProfessionalInput): string {
         agenda,
         location,
         message,
-        disclaimer,
+        disclaimers,
         code
     } = data;
 
@@ -58,7 +58,7 @@ BUSINESS DETAILS:
 CONTENT:
 - Key Info: ${message}
 ${details ? `- Details: ${details}` : ""}
-${disclaimer ? `- Disclaimer: ${disclaimer}` : ""}
+${disclaimers ? `- Disclaimers: ${disclaimers}` : ""}
 
 Instructions:
 - No greeting
@@ -66,7 +66,7 @@ Instructions:
 - Polish and make the message content feel personalized yet professional
 
 Output:
-${disclaimer
+${disclaimers
             ? "Subject line, email message, and disclaimer (3 lines total)"
             : "Subject line and email message (2 lines total)"}
 `;

@@ -13,7 +13,7 @@ export type ProfessionalInput = {
     agenda?: string;
     location?: string;
     message: string;
-    disclaimer?: string;
+    disclaimers?: string;
     unsub: string;
     color: string;
     logo: string;
