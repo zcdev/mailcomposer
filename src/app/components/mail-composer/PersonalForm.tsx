@@ -1,16 +1,15 @@
 'use client';
+import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PersonalInput, FieldConfig } from '@/types';
 import { personalFormSchema } from "@/lib/validation/personalFormSchema";
-import { promptAI } from '@/lib/prompt/promptAI';
-import { personalFormData } from '@/lib/prompt/personalFormData';
-import { downloadZip } from '@/lib/generate/downloadZip';
 import { primaryButtonStyle } from '@/components/ui';
 import Input from '../ui/Input';
 import TextArea from "../ui/TextArea";
 import Button from '../ui/Button';
 import Select from "../ui/Select";
+import { submitForm } from "@/lib/services/submit";
 
 export default function PersonalForm() {
     const {
@@ -22,19 +21,9 @@ export default function PersonalForm() {
         resolver: zodResolver(personalFormSchema),
     });
 
-    const onSubmit = async (data: PersonalInput) => {
-        try {
-            const promptData = personalFormData(data);
-            console.log("promptData", promptData);
-
-            const aiResponseData = await promptAI(promptData);
-            console.log("AI responded Data", aiResponseData.result);
-
-            await downloadZip(aiResponseData.result, data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    const [error, setError] = useState<string | null>(null);
+    const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const themeOption = useWatch({ control, name: "theme" });
     const messageValue = useWatch({ control, name: "message" });
@@ -96,31 +85,73 @@ export default function PersonalForm() {
 
         // Base fields
         {
-            name: "host", label: "Host", type: "input", placeholder: "Joy Johnson", minLength: 1, maxLength: 30
+            name: "host",
+            label: "Host",
+            type: "input",
+            placeholder: "Joy Johnson",
+            minLength: 1,
+            maxLength: 30,
         },
         {
-            name: "invitee", label: "Invitee", type: "input", placeholder: "Friends & Family", minLength: 1, maxLength: 30
+            name: "invitee",
+            label: "Invitee",
+            type: "input",
+            placeholder: "Friends & Family",
+            minLength: 1,
+            maxLength: 30,
         },
         {
-            name: "date", label: "Date", type: "input", placeholder: "June 12, 2026", minLength: 1, maxLength: 15
+            name: "date",
+            label: "Date",
+            type: "input",
+            placeholder: "June 12, 2026",
+            minLength: 1,
+            maxLength: 15,
         },
         {
-            name: "time", label: "Time", type: "input", placeholder: "6:00 PM", minLength: 1, maxLength: 15
+            name: "time",
+            label: "Time",
+            type: "input",
+            placeholder: "6:00 PM",
+            minLength: 1,
+            maxLength: 15,
         },
         {
-            name: "location", label: "Location", type: "input", placeholder: "123 Sunset Blvd", minLength: 1, maxLength: 50
+            name: "location",
+            label: "Location",
+            type: "input",
+            placeholder: "123 Sunset Blvd",
+            minLength: 1,
+            maxLength: 50,
         },
         {
-            name: "food", label: "Food", type: "input", placeholder: "Dinner, snacks, and drinks (Optional)"
+            name: "food",
+            label: "Food",
+            type: "input",
+            placeholder: "Dinner, snacks, and drinks (Optional)",
         },
         {
-            name: "activities", label: "Activities", type: "input", placeholder: "Games, music", minLength: 1, maxLength: 30
+            name: "activities",
+            label: "Activities",
+            type: "input",
+            placeholder: "Games, music",
+            minLength: 1,
+            maxLength: 30,
         },
         {
-            name: "rsvp", label: "RSVP Link", type: "input", placeholder: "https://your-own-or-facebook-link-example.com", minLength: 1, maxLength: 100
+            name: "rsvp",
+            label: "RSVP Link",
+            type: "input",
+            placeholder: "https://your-own-or-facebook-link-example.com", minLength: 1,
+            maxLength: 100,
         },
         {
-            name: "banner", label: "Banner Link", type: "input", placeholder: "https://your-own-banner-link-example.com/banner.png (Optional)", minLength: 1, maxLength: 100
+            name: "banner",
+            label: "Banner Link",
+            type: "input",
+            placeholder: "https://your-own-banner-link-example.com/banner.png (Optional)",
+            minLength: 1,
+            maxLength: 100,
         },
 
         // Message
@@ -134,8 +165,10 @@ export default function PersonalForm() {
         },
     ];
 
+    const onError = (err: any) => console.log("ERROR", err);
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="maxLength-w-xl flex flex-col">
+        <form onSubmit={handleSubmit(submitForm, onError)} className="max-w-xl flex flex-col">
             {fields.map((field) => {
 
                 if (field.showIf && !field.showIf(themeOption ?? "")) return null;

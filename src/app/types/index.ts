@@ -29,3 +29,5 @@ export type TemplatePartials = Pick<ProfessionalInput, "picture" | "disclaimers"
     footer?: string;
 };
 
+export type PersonalTheme = Pick<PersonalInput, "theme">;
+
