@@ -1,17 +1,10 @@
-import { ThemeBase } from "@/types";
-export const announcementMJML = (themeBase: ThemeBase, picture: string, btnTxtColor: string) => {
+import { ThemeBase, TemplatePartials } from "@/types";
 
-    const { subject, emailBody, logo, color, currentYear, formData } = themeBase;
+export const announcementMJML = (themeBase: ThemeBase, partials: TemplatePartials) => {
 
-    const { website, business, topic, customer, disclaimer, unsub, address, text, cta } = formData;
+  const { subject, emailBody, formData } = themeBase;
 
-    const announcementPic = picture && `<mj-image width="400px" padding="10px 10px" src="${picture}" href="${cta}" alt="${text} to visit" />`;
-
-    const announcementBtn = text && cta && `<mj-button font-family="Helvetica" background-color="${color}" color="${btnTxtColor}" padding-bottom="20px" href="${cta}">
-    ${text}
-    </mj-button>`;
-
-    return `
+  return `
     <mjml>
     <mj-head>
       <mj-title>${subject}</mj-title>
@@ -36,22 +29,16 @@ export const announcementMJML = (themeBase: ThemeBase, picture: string, btnTxtCo
     <mj-body>
       <mj-section full-width="full-width" padding="0px 0px">
         <mj-column css-class="framer" width="600px" padding="0px 0px">
-          <mj-image width="100px" padding="10px 10px" src="${logo}" href="${website}" alt="${business} logo" />
-          <mj-divider border-width="4px" border-style="solid" border-color="${color}"></mj-divider>
-          <mj-text css-class="header" font-size="40px" color="#000000">${topic}</mj-text>
-          ${announcementPic}
-          <mj-text font-size="20px" line-height="40px" color="#000000">Hi ${customer},</mj-text>
-          <mj-text font-size="20px" line-height="40px" color="#000000">${emailBody}</mj-text>
-          ${announcementBtn}
-          <mj-text font-size="20px" line-height="40px" color="#000000">
-          ${business}
+          ${partials.header || ""}
+          <mj-text css-class="header" font-size="40px" color="#000000">${formData.topic}</mj-text>
+          ${partials.picture || ""}
+          <mj-text font-size="20px" line-height="40px" color="#000000">Hi ${formData.customer},</mj-text>
+          <mj-text font-size="20px" line-height="40px" color="#000000">${emailBody || ""}</mj-text>
+          ${partials.button || ""}
+          <mj-text font-size="12px" line-height="24px" color="#666666" padding="0px 20px 0px 20px">
+          ${partials.disclaimers || ""}
           </mj-text>
-          <mj-divider border-width="1px" border-style="dashed" border-color="#dddddd" padding="20px 20px" />
-          <mj-text font-size="12px" line-height="24px" color="#666666" padding="0px 20px 0px 20px">${disclaimer}</mj-text>
-          <mj-text font-size="12px" line-height="24px" color="#666666" padding="0px 20px 0px 20px">This email was sent to ${customer}. To no longer receive emails from <a href="${website}" style="color:#666666 !important; text-decoration: underline;">${business}</a>, <a href="${unsub}" style="color:#666666 !important; text-decoration: underline;">unsubscribe</a>.</mj-text>
-          <mj-text font-size="12px" line-height="24px" color="#666666" padding="0px 20px 0px 20px">${address}</mj-text>
-          <mj-text font-size="12px" line-height="24px" color="#666666" padding="0px 20px 0px 20px">${business} &copy;${currentYear}</mj-text>
-          <mj-spacer height="20px" />
+          ${partials.footer || ""}
         </mj-column>
       </mj-section>
     </mj-body>
