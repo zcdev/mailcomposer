@@ -1,3 +1,5 @@
+export const currentYear = new Date().getFullYear();
+
 export function getContrastTextColor(hex: string) {
     const c = hex.replace("#", "");
 
