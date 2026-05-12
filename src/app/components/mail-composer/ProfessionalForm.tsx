@@ -33,7 +33,7 @@ export default function ProfessionalForm() {
         const result = await submitForm(data);
 
         if (!result.success) {
-            setError("root.serverError", {
+            setError("root", {
                 type: "manual",
                 message: result.message,
             });

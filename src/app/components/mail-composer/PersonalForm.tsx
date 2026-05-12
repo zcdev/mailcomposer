@@ -32,7 +32,7 @@ export default function PersonalForm() {
         const result = await submitForm(data);
 
         if (!result.success) {
-            setError("root.serverError", {
+            setError("root", {
                 type: "manual",
                 message: result.message,
             });

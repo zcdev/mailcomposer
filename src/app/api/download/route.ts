@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         : personalTemplate(subject, emailBody, formData);
 
     const result = mjml2html(theme, {
-        beautify: true,
+        minify: true,
         validationLevel: 'strict',
     });
 
