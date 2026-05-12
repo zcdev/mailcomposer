@@ -30,5 +30,5 @@ export type TemplatePartials = Pick<ProfessionalInput, "picture" | "disclaimers"
 };
 
 export type SubmitResult =
-    | { success: true; }
+    | { success: true; message: string }
     | { success: false; message: string; };

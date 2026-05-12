@@ -11,13 +11,13 @@ import TextArea from "../ui/TextArea";
 import Button from '../ui/Button';
 import Select from "../ui/Select";
 import { fields } from "@/lib/data/professional-input";
+import { toast } from 'sonner';
 
 export default function ProfessionalForm() {
     const {
         register,
         control,
         handleSubmit,
-        setError,
         formState: { errors, isSubmitting },
     } = useForm<ProfessionalInput>({
         resolver: zodResolver(professionalFormSchema),
@@ -32,12 +32,9 @@ export default function ProfessionalForm() {
     const onSubmit = async (data: ProfessionalInput): Promise<void> => {
         const result = await submitForm(data);
 
-        if (!result.success) {
-            setError("root", {
-                type: "manual",
-                message: result.message,
-            });
-        }
+        result.success
+            ? toast.success(result.message)
+            : toast.error(result.message);
         return;
     };
 

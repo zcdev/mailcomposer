@@ -1,4 +1,3 @@
-// api/compose/route.ts
 import "server-only";
 import { NextRequest, NextResponse } from "next/server";
 import { openai, DEFAULT_MODEL } from '@/lib/prompt/openai';

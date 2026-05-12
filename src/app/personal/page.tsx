@@ -4,6 +4,7 @@ import PersonalForm from "../components/mail-composer/PersonalForm";
 import Wrapper from '@/components/layout/wrapper';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import { Toaster } from "sonner";
 
 export default function PersonalPage() {
     return (
@@ -13,6 +14,7 @@ export default function PersonalPage() {
                 <section className="p-2">
                     <h1 className="text-2xl mt-8">Personal Email Template</h1>
                     <PersonalForm />
+                    <Toaster position="bottom-center" />
                 </section>
             </main>
             <Footer />

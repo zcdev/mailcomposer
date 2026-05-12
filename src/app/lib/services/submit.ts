@@ -28,6 +28,7 @@ export const submitForm = async (data: PersonalInput | ProfessionalInput): Promi
 
         return {
             success: true,
+            message: "Template successfully generated!"
         };
 
     } catch (error) {

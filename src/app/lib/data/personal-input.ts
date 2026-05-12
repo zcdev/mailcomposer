@@ -48,7 +48,7 @@ export const fields: FieldConfig<PersonalInput>[] = [
     },
     {
         name: "year",
-        label: "Year",
+        label: "New Year",
         type: "input",
         placeholder: `${currentYear + 1}`,
         maxLength: 4,

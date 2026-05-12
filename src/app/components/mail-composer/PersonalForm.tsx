@@ -11,13 +11,13 @@ import Button from '../ui/Button';
 import Select from "../ui/Select";
 import { submitForm } from "@/lib/services/submit";
 import { fields } from "@/lib/data/personal-input";
+import { toast } from 'sonner';
 
 export default function PersonalForm() {
     const {
         register,
         control,
         handleSubmit,
-        setError,
         formState: { errors, isSubmitting },
     } = useForm<PersonalInput>({
         resolver: zodResolver(personalFormSchema),
@@ -30,13 +30,10 @@ export default function PersonalForm() {
 
     const onSubmit = async (data: PersonalInput): Promise<void> => {
         const result = await submitForm(data);
+        result.success
+            ? toast.success(result.message)
+            : toast.error(result.message);
 
-        if (!result.success) {
-            setError("root", {
-                type: "manual",
-                message: result.message,
-            });
-        }
         return;
     };
 
