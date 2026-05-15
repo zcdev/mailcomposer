@@ -17,7 +17,7 @@ export const submitForm = async (data: PersonalInput | ProfessionalInput): Promi
         const aiResponseData = await promptAI(promptData);
         console.log("AI responded Data", aiResponseData.result);
 
-        if (!aiResponseData) {
+        if (!aiResponseData?.result) {
             return {
                 success: false,
                 message: "No AI response received.",
