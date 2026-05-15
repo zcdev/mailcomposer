@@ -30,7 +30,7 @@ export const fields: FieldConfig<ProfessionalInput>[] = [
         type: "input",
         placeholder: "AI Software Development Workshop",
         minLength: 1,
-        maxLength: 50,
+        maxLength: 100,
         showIf: (theme) => theme !== "promotion",
     },
     // ───────────────────── Required fields ─────────────────────

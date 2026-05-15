@@ -12,7 +12,7 @@ export const professionalFormSchema = z.object({
 
     item: z.string().min(1, "A promotional item is required.").max(50, "Must be 50 characters or fewer.").optional(),
 
-    topic: z.string().min(1, "A topic is required.").max(50, "Must be 50 characters or fewer.").optional(),
+    topic: z.string().min(1, "A topic is required.").max(100, "Must be 100 characters or fewer.").optional(),
 
     customer: z.string().min(1, "Customer name is required.").max(30, "Must be 30 characters or fewer."),
 
