@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProfessionalInput } from "@/types/";
@@ -23,7 +23,12 @@ export default function ProfessionalForm() {
         resolver: zodResolver(professionalFormSchema),
     });
 
-    const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
+    const COOLDOWN_MS = 15000;
+
+    const [cooldownUntil, setCooldownUntil] = useState<number>(0);
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+    const cooldownSeconds = Math.ceil(cooldownUntil / 1000);
 
     const themeOption = useWatch({ control, name: "theme" });
     const messageValue = useWatch({ control, name: "message" });
@@ -31,12 +36,45 @@ export default function ProfessionalForm() {
 
     const onSubmit = async (data: ProfessionalInput): Promise<void> => {
         const result = await submitForm(data);
-
         result.success
-            ? toast.success(result.message)
-            : toast.error(result.message);
-        return;
+            ? toast.success(result.message, {
+                duration: 5000,
+            })
+            : toast.error(result.message, {
+                duration: 5000,
+            });
+
+        if (cooldownUntil > 0) {
+            toast.error(`Please wait ${cooldownSeconds}s`);
+            return;
+        }
+
+        if (result.success) {
+            setIsSubmitted(true);
+            setCooldownUntil(COOLDOWN_MS);
+        }
     };
+
+    useEffect(() => {
+        if (!isSubmitted) return;
+
+        const coolDownClock = setInterval(() => {
+
+            setCooldownUntil(prev => {
+
+                if (prev <= 1000) {
+                    clearInterval(coolDownClock);
+                    setIsSubmitted(false);
+                    return 0;
+                }
+
+                return prev - 1000;
+            });
+
+        }, 1000);
+
+        return () => clearInterval(coolDownClock);
+    }, [isSubmitted]);
 
     const onError = (err: any) => console.log("ERROR", err);
 
@@ -92,7 +130,13 @@ export default function ProfessionalForm() {
                 return null;
             })}
 
-            <Button type="submit" disabled={isSubmitting} className={primaryButtonStyle}>{isSubmitting ? "Generating..." : "Generate & Download"}</Button>
+            <Button type="submit"
+                disabled={isSubmitted && cooldownUntil > 0} className={primaryButtonStyle}>
+                {isSubmitting
+                    ? "Generating..."
+                    : (isSubmitted && cooldownUntil > 0)
+                        ? `Wait ${cooldownUntil / 1000}s`
+                        : "Generate & Download"}</Button>
         </form>
     );
 }

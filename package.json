@@ -13,6 +13,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@t3-oss/env-nextjs": "^0.13.11",
     "@types/adm-zip": "^0.5.8",
+    "@upstash/ratelimit": "^2.0.8",
     "adm-zip": "^0.5.17",
     "mjml": "^4.18.0",
     "next": "16.2.3",

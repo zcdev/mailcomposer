@@ -33,14 +33,7 @@ export default function PersonalForm() {
     const themeOption = useWatch({ control, name: "theme" });
     const messageValue = useWatch({ control, name: "message" });
 
-    console.log("cooldownUntil", cooldownUntil);
-    console.log("isSubmitted", isSubmitted);
-
     const onSubmit = async (data: PersonalInput): Promise<void> => {
-        if (cooldownUntil > 0) {
-            toast.error(`Please wait ${cooldownSeconds}s`);
-        }
-
         const result = await submitForm(data);
         result.success
             ? toast.success(result.message, {
@@ -49,6 +42,11 @@ export default function PersonalForm() {
             : toast.error(result.message, {
                 duration: 5000,
             });
+
+        if (cooldownUntil > 0) {
+            toast.error(`Please wait ${cooldownSeconds}s`);
+            return;
+        }
 
         if (result.success) {
             setIsSubmitted(true);

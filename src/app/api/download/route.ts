@@ -29,10 +29,7 @@ export async function POST(req: NextRequest) {
 
         if (result.errors.length > 0 || !result.html) {
             return NextResponse.json(
-                {
-                    error: "Failed to generate template",
-                    details: result.errors,
-                },
+                { error: "Failed to generate template" },
                 { status: 400 }
             );
         }
@@ -51,6 +48,8 @@ export async function POST(req: NextRequest) {
         });
 
     } catch (error) {
-        return NextResponse.json({ error: 'Something went wrong.' }, { status: 500 });
+        return NextResponse.json(
+            { error: 'Something went wrong.' },
+            { status: 500 });
     }
 }
