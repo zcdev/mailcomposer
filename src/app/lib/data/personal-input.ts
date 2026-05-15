@@ -78,7 +78,7 @@ export const fields: FieldConfig<PersonalInput>[] = [
         type: "input",
         placeholder: "June 12, 2026",
         minLength: 1,
-        maxLength: 15,
+        maxLength: 20,
     },
     {
         name: "time",

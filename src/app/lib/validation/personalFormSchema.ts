@@ -10,7 +10,7 @@ export const personalFormSchema = z.object({
 
     invitee: z.string().min(1, "Invitee name is required.").max(30, "Must be 30 characters or fewer."),
 
-    date: z.string().min(1, "Please enter a date.").max(15, "Must be 15 characters or fewer."),
+    date: z.string().min(1, "Please enter a date.").max(20, "Must be 20 characters or fewer."),
 
     time: z.string().min(1, "Please enter a time.").max(15, "Must be 15 characters or fewer."),
 
