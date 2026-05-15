@@ -39,13 +39,16 @@ export default function PersonalForm() {
     const onSubmit = async (data: PersonalInput): Promise<void> => {
         if (cooldownUntil > 0) {
             toast.error(`Please wait ${cooldownSeconds}s`);
-            return;
         }
 
         const result = await submitForm(data);
         result.success
-            ? toast.success(result.message)
-            : toast.error(result.message);
+            ? toast.success(result.message, {
+                duration: 5000,
+            })
+            : toast.error(result.message, {
+                duration: 5000,
+            });
 
         if (result.success) {
             setIsSubmitted(true);
@@ -128,11 +131,11 @@ export default function PersonalForm() {
             })}
 
             <Button type="submit"
-                disabled={isSubmitting && (isSubmitted && cooldownUntil > 0)} className={primaryButtonStyle}>
+                disabled={isSubmitted && cooldownUntil > 0} className={primaryButtonStyle}>
                 {isSubmitting
                     ? "Generating..."
                     : (isSubmitted && cooldownUntil > 0)
-                        ? `Wait ${cooldownUntil}s`
+                        ? `Wait ${cooldownUntil / 1000}s`
                         : "Generate & Download"}</Button>
         </form>
     );
