@@ -136,7 +136,8 @@ export default function ProfessionalForm() {
                     ? "Generating..."
                     : (isSubmitted && cooldownUntil > 0)
                         ? `Wait ${cooldownUntil / 1000}s`
-                        : "Generate & Download"}</Button>
+                        : "Generate & Download"}
+            </Button>
         </form>
     );
 }

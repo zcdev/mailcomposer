@@ -1,4 +1,4 @@
-import { ProfessionalInput, ThemeBase, TemplatePartials } from "@/types";
+import { ProfessionalInput, TemplatePartials } from "@/types";
 import { relationMJML } from "@/utils/professional-mjml/relation";
 import { inviteMJML } from "@/utils/professional-mjml/invite";
 import { getContrastTextColor } from "./helpers/theming";
@@ -53,7 +53,7 @@ export function professionalTemplate(subject: string, emailBody: string, formDat
         promotion: promotionMJML,
         invite: inviteMJML,
         relation: relationMJML,
-      };
+    };
 
     const renderTheme = themes[theme];
 
