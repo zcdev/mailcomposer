@@ -25,10 +25,10 @@ export const submitForm = async (data: PersonalInput | ProfessionalInput): Promi
 
         const preview = await previewHtml(aiResponseData.result, data);
 
-        /* For debug use
+        /* For debug use */
         console.log("promptData", promptData);
         console.log("AI responded Data", aiResponseData.result);
-        console.log(preview); */
+        console.log(preview);
 
         localStorage.setItem("previewHtml", preview.html);
 
@@ -42,6 +42,7 @@ export const submitForm = async (data: PersonalInput | ProfessionalInput): Promi
         };
 
     } catch (error) {
+        console.error(error);
         return {
             success: false,
             message: "Failed generating template.",

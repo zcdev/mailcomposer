@@ -35,13 +35,16 @@ export default function PersonalForm() {
 
     const onSubmit = async (data: PersonalInput): Promise<void> => {
         const result = await submitForm(data);
-        result.success
-            ? toast.success(result.message, {
-                duration: 5000,
-            })
-            : toast.error(result.message, {
+
+        if (result.success) {
+            toast.success(result.message, {
                 duration: 5000,
             });
+        } else {
+            toast.error(result.message, {
+                duration: 5000,
+            });
+        }
 
         if (cooldownUntil > 0) {
             toast.error(`Please wait ${cooldownSeconds}s`);
@@ -75,10 +78,10 @@ export default function PersonalForm() {
         return () => clearInterval(coolDownClock);
     }, [isSubmitted]);
 
-    const onError = (err: any) => console.log("ERROR", err);
+    // const onError = (err: any) => console.log("ERROR", err);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit, onError)} className="max-w-xl flex flex-col">
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl flex flex-col">
             {fields.map((field) => {
 
                 if (field.showIf && !field.showIf(themeOption ?? "")) return null;

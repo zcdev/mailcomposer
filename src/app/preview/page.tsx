@@ -9,6 +9,7 @@ export default function PreviewPage() {
         const savedHtml = localStorage.getItem("previewHtml");
 
         if (savedHtml) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setHtml(savedHtml);
         }
     }, []);

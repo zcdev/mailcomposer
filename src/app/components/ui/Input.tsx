@@ -15,6 +15,7 @@ export default function Input({ label, error, name, ...props }: InputProps) {
                 aria-describedby={error ? `${name}-error` : undefined}
                 {...props}
                 className="w-full border border-black dark:border-white rounded-lg p-2"
+                autoComplete="on"
             />
 
             {error && (

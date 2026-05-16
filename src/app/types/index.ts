@@ -30,5 +30,7 @@ export type TemplatePartials = Pick<ProfessionalInput, "picture" | "disclaimers"
 };
 
 export type SubmitResult =
-    | { success: true; message: string }
+    | { success: true; message: string; }
     | { success: false; message: string; };
+
+export type FormData = PersonalInput | ProfessionalInput;

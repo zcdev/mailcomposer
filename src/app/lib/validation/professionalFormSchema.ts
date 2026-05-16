@@ -55,7 +55,7 @@ export const professionalFormSchema = z.object({
     picture: z.url({ message: "Invalid image link." }).max(100, "Must be 100 characters or fewer.").or(z.literal("")).optional(),
 }).superRefine((data, context) => {
     if (data.theme === "promotion") {
-        if (!data.item) {
+        if (!data.item?.trim()) {
             context.addIssue({
                 path: ["item"],
                 code: "custom",
@@ -63,7 +63,7 @@ export const professionalFormSchema = z.object({
             });
         }
     } else {
-        if (!data.topic) {
+        if (!data.topic?.trim()) {
             context.addIssue({
                 path: ["topic"],
                 code: "custom",
@@ -71,4 +71,4 @@ export const professionalFormSchema = z.object({
             });
         }
     }
-});;
+});

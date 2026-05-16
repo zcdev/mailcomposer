@@ -8,7 +8,7 @@ const redis = Redis.fromEnv();
 
 const ratelimit = new Ratelimit({
     redis,
-    limiter: Ratelimit.slidingWindow(1, "1 m"),
+    limiter: Ratelimit.slidingWindow(5, "1 m"),
 });
 
 export async function POST(req: NextRequest) {
@@ -56,7 +56,8 @@ export async function POST(req: NextRequest) {
             { result: response.output_text }
         );
 
-    } catch (error) {
+    } catch (error: unknown) {
+        console.error(error);
         return NextResponse.json(
             { error: 'Something went wrong.' },
             { status: 500 });
