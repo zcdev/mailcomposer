@@ -1,13 +1,13 @@
 import { PersonalInput, ProfessionalInput } from "@/types";
 
-export async function downloadZip(emailData: string, formData: PersonalInput | ProfessionalInput) {
+export async function previewHtml(emailData: string, formData: PersonalInput | ProfessionalInput) {
     const subjectLineTxt = emailData.split('\n')[0]?.replace(/\*\*Subject:\*\*\s+/, "").trim();
 
     const emailBodyMsg = emailData.split('\n')[1]?.replace(/\*\*Message:\*\*\s+/, "").trim();
 
     const disclaimerNote = emailData.split('\n')[2]?.replace(/\*\*Disclaimer:\*\*\s+/, "").trim();
 
-    const response = await fetch('/api/download', {
+    const response = await fetch('/api/preview', {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -20,19 +20,9 @@ export async function downloadZip(emailData: string, formData: PersonalInput | P
         }),
     });
 
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    if (!response.ok) {
+        throw new Error("Failed to generate preview");
+    }
 
-    /* For debug use
-    console.log("response", response);
-    console.log("blob", blob);
-    console.log(subjectLineTxt);
-    console.log(emailBodyMsg);
-    console.log(disclaimerNote); */
-
-    link.href = url;
-    link.download = 'MailComposer.zip';
-    link.click();
-    window.URL.revokeObjectURL(url);
-};
+    return response.json();
+}
