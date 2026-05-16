@@ -1,8 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
-import AdmZip from 'adm-zip';
 import { generateHTML } from "@/utils/generate-html";
 export const runtime = "nodejs";
-
 export async function POST(req: NextRequest) {
     try {
         const { subject, emailBody, formData } = await req.json();
@@ -23,18 +21,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const zip = new AdmZip();
-        zip.addFile("subject-line.txt", Buffer.from(subject));
-        zip.addFile("email-template.html", Buffer.from(result.html));
-
-        const zipBuffer = zip.toBuffer();
-
-        return new NextResponse(zipBuffer, {
-            headers: {
-                'Content-Disposition': 'attachment; filename=MailComposer.zip',
-                'Content-Type': 'application/zip',
-            },
-        });
+        return NextResponse.json({ html: result.html });
 
     } catch (error) {
         return NextResponse.json(
