@@ -35,7 +35,7 @@ export function personalTemplate(subject: string, emailBody: string, formData: P
           }
         </mj-style>
       </mj-head>
-      <mj-body>
+      <mj-body background-color="#ffffff">
         <mj-section full-width="full-width" padding="0px 0px">
           <mj-column css-class="framer" width="600px" padding="0px 0px">
             <mj-image css-class="banner" width="600px" padding="0px 0px" src="${banner}" alt="MailComposer ${formData.theme} banner"></mj-image>
