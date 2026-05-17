@@ -22,7 +22,8 @@ export default function PreviewPage() {
             <main className="max-w-6xl bg-white dark:bg-black px-4 py-6 md:p-6 rounded-lg border border-black dark:border-white">
                 <Header />
                 <section>
-                    <h1 className="text-xl md:text-2xl text-center mb-4">Email Preview:</h1>
+                    <p className="primary-color text-lg text-center">Email template has been generated and downloaded!</p>
+                    <h1 className="primary-color text-xl md:text-2xl text-center m-4">Email Preview:</h1>
                     <iframe
                         srcDoc={html}
                         className="w-full h-screen border-0"
