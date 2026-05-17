@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <Wrapper>
-      <main className="bg-white dark:bg-black p-6 rounded-lg border border-black dark:border-white">
+      <main className="max-w-6xl bg-white dark:bg-black px-4 py-6 md:p-6 rounded-lg border border-black dark:border-white">
         <Header />
         <Content />
         <section className="p-2">

@@ -22,7 +22,7 @@ export default function RootLayout({
       lang="en"
       className={`${outfitFont.variable} h-full antialiased`}
     >
-      <body className="w-full h-full">
+      <body className="w-screen h-screen bg-slate-100 dark:bg-slate-700">
         {children}
       </body>
     </html>
