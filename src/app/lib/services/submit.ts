@@ -25,14 +25,12 @@ export const submitForm = async (data: PersonalInput | ProfessionalInput): Promi
 
         const preview = await previewHtml(aiResponseData.result, data);
 
-        /* For debug use */
+        /* For debug use
         console.log("promptData", promptData);
         console.log("AI responded Data", aiResponseData.result);
-        console.log(preview);
+        console.log(preview); */
 
         localStorage.setItem("previewHtml", preview.html);
-
-        window.open("/preview", "_blank");
 
         await downloadZip(aiResponseData.result, data);
 

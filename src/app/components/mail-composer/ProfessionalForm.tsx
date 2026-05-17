@@ -12,6 +12,7 @@ import Button from '../ui/Button';
 import Select from "../ui/Select";
 import { fields } from "@/lib/data/professional-input";
 import { toast } from 'sonner';
+import { redirect } from 'next/navigation';
 
 export default function ProfessionalForm() {
     const {
@@ -57,6 +58,7 @@ export default function ProfessionalForm() {
             setIsSubmitted(true);
             setCooldownUntil(COOLDOWN_MS);
         }
+        redirect('/preview');
     };
 
     useEffect(() => {

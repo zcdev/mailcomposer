@@ -12,6 +12,7 @@ import Select from "../ui/Select";
 import { submitForm } from "@/lib/services/submit";
 import { fields } from "@/lib/data/personal-input";
 import { toast } from 'sonner';
+import { redirect } from 'next/navigation';
 
 export default function PersonalForm() {
     const {
@@ -55,6 +56,7 @@ export default function PersonalForm() {
             setIsSubmitted(true);
             setCooldownUntil(COOLDOWN_MS);
         }
+        redirect('/preview');
     };
 
     useEffect(() => {
