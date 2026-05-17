@@ -3,7 +3,7 @@ export function personalTemplate(subject: string, emailBody: string, formData: P
   const headline = formData.theme === "birthday" ? "Happy Birthday!" :
     formData.theme === "graduation" ? "Congrats, Grads!" :
       formData.theme === "wedding" ? "Cherish Forever" : "Happy New Year!";
-  const ASSET_BASE_URL = "https://raw.githubusercontent.com/zcdev/banners/main/";
+  const ASSET_BASE_URL = "https://mailcomposer.vercel.app/assets/banners/";
 
   const banner = formData.banner ? formData.banner : `${ASSET_BASE_URL}${formData.theme}.png`;
   return `
