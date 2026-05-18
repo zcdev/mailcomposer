@@ -6,7 +6,7 @@ import Header from '@/components/layout/header';
 export default function PrivacyPage() {
     return (
         <Wrapper>
-            <main className="bg-white dark:bg-black p-6 rounded-lg border border-black dark:border-white">
+            <main className="bg-white dark:bg-black px-4 py-6 md:p-6 rounded-lg border border-black dark:border-white">
                 <Header />
                 <section className="p-2">
                     <h1 className="text-2xl mt-8">Privacy & AI Processing</h1>

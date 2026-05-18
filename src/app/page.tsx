@@ -11,11 +11,11 @@ export default function Home() {
 
   return (
     <Wrapper>
-      <main className="max-w-6xl bg-white dark:bg-black px-4 py-6 md:p-6 rounded-lg border border-black dark:border-white">
+      <main className="flex flex-col max-w-6xl bg-white dark:bg-black px-4 py-6 md:p-6 rounded-lg border border-black dark:border-white">
         <Header />
         <Content />
-        <section className="p-2">
-          <Anchor href="/professional" className={primaryButtonStyle}>Professional</Anchor>
+        <section className="p-2 flex gap-2 justify-center md:justify-start">
+          <Anchor href="/professional" className={`${primaryButtonStyle} mr-4 md:mr-8`}>Professional</Anchor>
           <Anchor href="/personal" className={primaryButtonStyle}>Personal</Anchor>
         </section>
       </main>

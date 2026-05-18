@@ -1,1 +1,1 @@
-export const primaryButtonStyle = "primary-button w-full text-center items-center justify-center px-6 py-3 mt-4 mr-8 text-md md:text-lg text-white font-semibold rounded-lg hover:opacity-80 transition disabled:cursor-not-allowed disabled:opacity-70";
+export const primaryButtonStyle = "block primary-button text-center items-center justify-center px-6 py-3 text-md md:text-lg text-white font-semibold rounded-lg hover:opacity-80 transition disabled:cursor-not-allowed disabled:opacity-70";
