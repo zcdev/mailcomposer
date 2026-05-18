@@ -100,13 +100,21 @@ Project includes strict linting and verification workflows to reduce deployment 
 ## Project Structure
 
 ```txt
-src/
-├── app/
-├── components/
-├── lib/
-├── utils/
-├── types/
-└── styles/
+.
+├── public
+│   └── assets
+│       └── banners
+└── src
+    └── app
+        ├── api
+        ├── components
+        ├── lib
+        ├── personal
+        ├── preview
+        ├── privacy
+        ├── professional
+        ├── types
+        └── utils
 ```
 
 ## Local Development
